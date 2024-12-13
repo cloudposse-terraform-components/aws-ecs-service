@@ -5,7 +5,7 @@ tags:
   - provider/aws
 ---
 
-# Component: `ecs`
+# Component: `ecs-service`
 
 This component is responsible for creating an ECS service.
 
