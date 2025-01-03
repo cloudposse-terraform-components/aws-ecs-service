@@ -177,8 +177,8 @@ description: |-
   ```text
   HTTP Host Header is
   echo-server.public-platform.use2.dev.plat.service-discovery.com
-   OR echo-server.dev-acme.com
-   OR echo.acme.com
+  OR echo-server.dev-acme.com
+  OR echo.acme.com
   ```
 
   It will also create the record in Route53 to point `"echo-server.dev-acme.com"` to the ALB. Thus
