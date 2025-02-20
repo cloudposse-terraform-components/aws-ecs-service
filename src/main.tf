@@ -443,7 +443,7 @@ module "vanity_alias" {
 
 module "ecs_cloudwatch_autoscaling" {
   source  = "cloudposse/ecs-cloudwatch-autoscaling/aws"
-  version = "0.7.3"
+  version = "0.7.6"
 
   count = local.enabled && var.task_enabled && var.autoscaling_enabled ? 1 : 0
 
