@@ -83,7 +83,7 @@ data "aws_s3_object" "task_definition" {
 
 module "logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
-  version = "0.6.8"
+  version = "0.6.9"
 
   # if we are using datadog firelens we don't need to create a log group
   count = local.enabled && (!var.datadog_agent_sidecar_enabled || !var.datadog_log_method_is_firelens) ? 1 : 0
