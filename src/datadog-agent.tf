@@ -76,7 +76,7 @@ module "datadog_sidecar_logs" {
 
 module "datadog_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
@@ -124,7 +124,7 @@ module "datadog_container_definition" {
 
 module "datadog_fluent_bit_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
