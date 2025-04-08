@@ -201,8 +201,8 @@ This then creates the following listener rules:
 ```text
 HTTP Host Header is
 echo-server.public-platform.use2.dev.plat.service-discovery.com
- OR echo-server.dev-acme.com
- OR echo.acme.com
+OR echo-server.dev-acme.com
+OR echo.acme.com
 ```
 
 It will also create the record in Route53 to point `"echo-server.dev-acme.com"` to the ALB. Thus
@@ -508,7 +508,7 @@ components:
 > <summary><strong>Watch demo of using Atmos with Terraform</strong></summary>
 > <img src="https://github.com/cloudposse/atmos/blob/main/docs/demo.gif?raw=true"/><br/>
 > <i>Example of running <a href="https://atmos.tools"><code>atmos</code></a> to manage infrastructure from our <a href="https://atmos.tools/quick-start/">Quick Start</a> tutorial.</i>
-> </detalis>
+> </details>
 
 
 
