@@ -302,10 +302,10 @@ components:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.30.0 |
-| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_configuration"></a> [datadog\_configuration](#module\_datadog\_configuration) | github.com/cloudposse-terraform-components/aws-datadog-credentials//src/modules/datadog_keys | tags/v1.535.2 |
 | <a name="module_datadog_container_definition"></a> [datadog\_container\_definition](#module\_datadog\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
@@ -314,22 +314,22 @@ components:
 | <a name="module_ecs_alb_service_task"></a> [ecs\_alb\_service\_task](#module\_ecs\_alb\_service\_task) | cloudposse/ecs-alb-service-task/aws | 0.78.0 |
 | <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 0.7.3 |
 | <a name="module_ecs_cloudwatch_sns_alarms"></a> [ecs\_cloudwatch\_sns\_alarms](#module\_ecs\_cloudwatch\_sns\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.12.3 |
-| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_gha_assume_role"></a> [gha\_assume\_role](#module\_gha\_assume\_role) | ../account-map/modules/team-assume-role-policy | n/a |
 | <a name="module_gha_role_name"></a> [gha\_role\_name](#module\_gha\_role\_name) | cloudposse/label/null | 0.25.0 |
-| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_iam_roles"></a> [iam\_roles](#module\_iam\_roles) | ../account-map/modules/iam-roles | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.8 |
-| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_roles_to_principals"></a> [roles\_to\_principals](#module\_roles\_to\_principals) | ../account-map/modules/roles-to-principals | n/a |
-| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 | <a name="module_vanity_alias"></a> [vanity\_alias](#module\_vanity\_alias) | cloudposse/route53-alias/aws | 0.13.0 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 
 ## Resources
 
