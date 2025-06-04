@@ -292,7 +292,7 @@ components:
 | <a name="module_datadog_fluent_bit_container_definition"></a> [datadog\_fluent\_bit\_container\_definition](#module\_datadog\_fluent\_bit\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_sidecar_logs"></a> [datadog\_sidecar\_logs](#module\_datadog\_sidecar\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.9 |
 | <a name="module_ecs_alb_service_task"></a> [ecs\_alb\_service\_task](#module\_ecs\_alb\_service\_task) | cloudposse/ecs-alb-service-task/aws | 0.78.0 |
-| <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 0.7.6 |
+| <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 1.0.0 |
 | <a name="module_ecs_cloudwatch_sns_alarms"></a> [ecs\_cloudwatch\_sns\_alarms](#module\_ecs\_cloudwatch\_sns\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.13.2 |
 | <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
