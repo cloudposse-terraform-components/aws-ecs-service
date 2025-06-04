@@ -4,7 +4,7 @@ module "cloudmap_namespace" {
   for_each = { for service_connect in var.service_connect_configurations : service_connect.namespace => service_connect }
 
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.5.0"
+  version = "1.8.0"
 
   component = each.key
 
@@ -25,7 +25,7 @@ module "cloudmap_namespace_service_discovery" {
   for_each = { for service_connect in var.service_registries : service_connect.namespace => service_connect }
 
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.5.0"
+  version = "1.8.0"
 
   component = each.key
 
