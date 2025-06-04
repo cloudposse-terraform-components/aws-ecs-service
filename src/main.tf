@@ -182,7 +182,7 @@ locals {
 
 module "container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.1"
+  version = "0.61.2"
 
   for_each = { for k, v in local.containers_priority_terraform : k => v if local.enabled }
 
