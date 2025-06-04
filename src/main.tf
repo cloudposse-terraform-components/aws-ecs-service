@@ -475,7 +475,7 @@ locals {
 
 module "ecs_cloudwatch_sns_alarms" {
   source  = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
-  version = "0.12.3"
+  version = "0.13.2"
   count   = local.enabled && var.autoscaling_enabled ? 1 : 0
 
   cluster_name = module.ecs_cluster.outputs.cluster_name
