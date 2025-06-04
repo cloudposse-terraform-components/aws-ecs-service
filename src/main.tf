@@ -182,7 +182,7 @@ locals {
 
 module "container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.1"
+  version = "0.61.2"
 
   for_each = { for k, v in local.containers_priority_terraform : k => v if local.enabled }
 
@@ -254,7 +254,7 @@ locals {
 
 module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
-  version = "0.72.0"
+  version = "0.78.0"
 
   count = local.enabled ? 1 : 0
 
@@ -342,7 +342,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
 
 module "alb_ingress" {
   source  = "cloudposse/alb-ingress/aws"
-  version = "0.28.0"
+  version = "0.30.0"
 
   count = local.is_alb ? 1 : 0
 
