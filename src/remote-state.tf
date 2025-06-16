@@ -140,12 +140,6 @@ data "jq_query" "service_domain_query" {
   query = var.zone_component_output
 }
 
-module "datadog_configuration" {
-  source  = "github.com/cloudposse-terraform-components/aws-datadog-credentials//src/modules/datadog_keys?ref=tags/v1.535.2"
-  enabled = true
-  context = module.this.context
-}
-
 # This is purely a check to ensure this zone exists
 # tflint-ignore: terraform_unused_declarations
 data "aws_route53_zone" "selected" {
