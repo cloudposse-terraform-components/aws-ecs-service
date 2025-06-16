@@ -447,14 +447,12 @@ module "ecs_cloudwatch_autoscaling" {
 
   count = local.enabled && var.task_enabled && var.autoscaling_enabled ? 1 : 0
 
-  service_name          = module.ecs_alb_service_task[0].service_name
-  cluster_name          = module.ecs_cluster.outputs.cluster_name
-  min_capacity          = lookup(local.task, "min_capacity", 1)
-  max_capacity          = lookup(local.task, "max_capacity", 2)
-  scale_up_adjustment   = 1
-  scale_up_cooldown     = 60
-  scale_down_adjustment = -1
-  scale_down_cooldown   = 300
+  service_name        = module.ecs_alb_service_task[0].service_name
+  cluster_name        = module.ecs_cluster.outputs.cluster_name
+  min_capacity        = lookup(local.task, "min_capacity", 1)
+  max_capacity        = lookup(local.task, "max_capacity", 2)
+  scale_up_cooldown   = 60
+  scale_down_cooldown = 300
 
   context = module.this.context
 

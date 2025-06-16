@@ -46,12 +46,6 @@ data "aws_ssm_parameter" "datadog_api_key" {
   name = var.datadog_api_key_ssm_parameter_name
 }
 
-data "aws_ssm_parameter" "datadog_app_key" {
-  count = var.datadog_app_key_ssm_parameter_name != null && var.datadog_agent_sidecar_enabled ? 1 : 0
-
-  name = var.datadog_app_key_ssm_parameter_name
-}
-
 locals {
   default_datadog_tags = var.datadog_logging_default_tags_enabled ? {
     env     = module.this.stage
