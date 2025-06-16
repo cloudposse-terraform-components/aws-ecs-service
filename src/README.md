@@ -287,7 +287,6 @@ components:
 | <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
-| <a name="module_datadog_configuration"></a> [datadog\_configuration](#module\_datadog\_configuration) | github.com/cloudposse-terraform-components/aws-datadog-credentials//src/modules/datadog_keys | tags/v1.535.2 |
 | <a name="module_datadog_container_definition"></a> [datadog\_container\_definition](#module\_datadog\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_fluent_bit_container_definition"></a> [datadog\_fluent\_bit\_container\_definition](#module\_datadog\_fluent\_bit\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_sidecar_logs"></a> [datadog\_sidecar\_logs](#module\_datadog\_sidecar\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.9 |
@@ -333,6 +332,8 @@ components:
 | [aws_route53_zone.selected_vanity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [aws_s3_object.task_definition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_object) | data source |
 | [aws_s3_objects.mirror](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_objects) | data source |
+| [aws_ssm_parameter.datadog_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
+| [aws_ssm_parameter.datadog_app_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameters_by_path.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameters_by_path) | data source |
 | [jq_query.service_domain_query](https://registry.terraform.io/providers/massdriver-cloud/jq/latest/docs/data-sources/query) | data source |
 | [template_file.envs](https://registry.terraform.io/providers/cloudposse/template/latest/docs/data-sources/file) | data source |
@@ -364,10 +365,12 @@ components:
 | <a name="input_cpu_utilization_low_threshold"></a> [cpu\_utilization\_low\_threshold](#input\_cpu\_utilization\_low\_threshold) | The minimum percentage of CPU utilization average | `number` | `20` | no |
 | <a name="input_custom_security_group_rules"></a> [custom\_security\_group\_rules](#input\_custom\_security\_group\_rules) | The list of custom security group rules to add to the service security group | <pre>list(object({<br/>    type        = string<br/>    from_port   = number<br/>    to_port     = number<br/>    protocol    = string<br/>    cidr_blocks = list(string)<br/>    description = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_datadog_agent_sidecar_enabled"></a> [datadog\_agent\_sidecar\_enabled](#input\_datadog\_agent\_sidecar\_enabled) | Enable the Datadog Agent Sidecar | `bool` | `false` | no |
+| <a name="input_datadog_api_key_ssm_parameter_name"></a> [datadog\_api\_key\_ssm\_parameter\_name](#input\_datadog\_api\_key\_ssm\_parameter\_name) | The SSM Parameter Name containing the Datadog API Key | `string` | `null` | no |
 | <a name="input_datadog_log_method_is_firelens"></a> [datadog\_log\_method\_is\_firelens](#input\_datadog\_log\_method\_is\_firelens) | Datadog logs can be sent via cloudwatch logs (and lambda) or firelens, set this to true to enable firelens via a sidecar container for fluentbit | `bool` | `false` | no |
 | <a name="input_datadog_logging_default_tags_enabled"></a> [datadog\_logging\_default\_tags\_enabled](#input\_datadog\_logging\_default\_tags\_enabled) | Add Default tags to all logs sent to Datadog | `bool` | `true` | no |
 | <a name="input_datadog_logging_tags"></a> [datadog\_logging\_tags](#input\_datadog\_logging\_tags) | Tags to add to all logs sent to Datadog | `map(string)` | `null` | no |
 | <a name="input_datadog_sidecar_containers_logs_enabled"></a> [datadog\_sidecar\_containers\_logs\_enabled](#input\_datadog\_sidecar\_containers\_logs\_enabled) | Enable the Datadog Agent Sidecar to send logs to aws cloudwatch group, requires `datadog_agent_sidecar_enabled` to be true | `bool` | `true` | no |
+| <a name="input_datadog_site"></a> [datadog\_site](#input\_datadog\_site) | The Datadog Site to send logs to | `string` | `"us5.datadoghq.com"` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br/>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
 | <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br/>Map of maps. Keys are names of descriptors. Values are maps of the form<br/>`{<br/>  format = string<br/>  labels = list(string)<br/>}`<br/>(Type is `any` so the map values can later be enhanced to provide additional options.)<br/>`format` is a Terraform format string to be passed to the `format()` function.<br/>`labels` is a list of labels, in order, to pass to `format()` function.<br/>Label values will be normalized before being passed to `format()` so they will be<br/>identical to how they appear in `id`.<br/>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
 | <a name="input_ecr_region"></a> [ecr\_region](#input\_ecr\_region) | The region to use for the fully qualified ECR image URL. Defaults to the current region. | `string` | `""` | no |
