@@ -16,6 +16,24 @@ variable "datadog_sidecar_containers_logs_enabled" {
   description = "Enable the Datadog Agent Sidecar to send logs to aws cloudwatch group, requires `datadog_agent_sidecar_enabled` to be true"
 }
 
+variable "datadog_api_key_ssm_parameter_name" {
+  type        = string
+  default     = null
+  description = "The SSM Parameter Name containing the Datadog API Key"
+}
+
+variable "datadog_site" {
+  type        = string
+  default     = "us5.datadoghq.com"
+  description = "The Datadog Site to send logs to"
+}
+
+variable "datadog_app_key_ssm_parameter_name" {
+  type        = string
+  default     = null
+  description = "The SSM Parameter Name containing the Datadog App Key"
+}
+
 variable "datadog_logging_tags" {
   type        = map(string)
   default     = null
@@ -26,6 +44,18 @@ variable "datadog_logging_default_tags_enabled" {
   type        = bool
   default     = true
   description = "Add Default tags to all logs sent to Datadog"
+}
+
+data "aws_ssm_parameter" "datadog_api_key" {
+  count = var.datadog_api_key_ssm_parameter_name != null && var.datadog_agent_sidecar_enabled ? 1 : 0
+
+  name = var.datadog_api_key_ssm_parameter_name
+}
+
+data "aws_ssm_parameter" "datadog_app_key" {
+  count = var.datadog_app_key_ssm_parameter_name != null && var.datadog_agent_sidecar_enabled ? 1 : 0
+
+  name = var.datadog_app_key_ssm_parameter_name
 }
 
 locals {
@@ -40,8 +70,8 @@ locals {
     logDriver = "awsfirelens"
     options = var.datadog_agent_sidecar_enabled ? {
       Name           = "datadog",
-      apikey         = module.datadog_configuration.datadog_api_key,
-      Host           = format("http-intake.logs.%s", module.datadog_configuration.datadog_site)
+      apikey         = one(data.aws_ssm_parameter.datadog_api_key[*].value),
+      Host           = format("http-intake.logs.%s", var.datadog_site)
       dd_service     = module.this.name,
       dd_tags        = local.all_dd_tags,
       dd_source      = "ecs",
@@ -54,7 +84,7 @@ locals {
 
 module "datadog_sidecar_logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
-  version = "0.6.9"
+  version = "0.6.6"
 
   # if we are using datadog firelens we don't need to create a log group
   count = local.enabled && var.datadog_agent_sidecar_enabled && var.datadog_sidecar_containers_logs_enabled ? 1 : 0
@@ -76,7 +106,7 @@ module "datadog_sidecar_logs" {
 
 module "datadog_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.2"
+  version = "0.58.1"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
@@ -87,8 +117,8 @@ module "datadog_container_definition" {
   essential        = true
   map_environment = {
     "ECS_FARGATE"                          = var.task.launch_type == "FARGATE" ? true : false
-    "DD_API_KEY"                           = module.datadog_configuration.datadog_api_key
-    "DD_SITE"                              = module.datadog_configuration.datadog_site
+    "DD_API_KEY"                           = one(data.aws_ssm_parameter.datadog_api_key[*].value)
+    "DD_SITE"                              = var.datadog_site
     "DD_ENV"                               = module.this.stage
     "DD_LOGS_ENABLED"                      = true
     "DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL" = true
@@ -124,7 +154,7 @@ module "datadog_container_definition" {
 
 module "datadog_fluent_bit_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.2"
+  version = "0.58.1"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
