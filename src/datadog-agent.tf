@@ -28,12 +28,6 @@ variable "datadog_site" {
   description = "The Datadog Site to send logs to"
 }
 
-variable "datadog_app_key_ssm_parameter_name" {
-  type        = string
-  default     = null
-  description = "The SSM Parameter Name containing the Datadog App Key"
-}
-
 variable "datadog_logging_tags" {
   type        = map(string)
   default     = null
@@ -84,7 +78,7 @@ locals {
 
 module "datadog_sidecar_logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
-  version = "0.6.6"
+  version = "0.6.9"
 
   # if we are using datadog firelens we don't need to create a log group
   count = local.enabled && var.datadog_agent_sidecar_enabled && var.datadog_sidecar_containers_logs_enabled ? 1 : 0
@@ -106,7 +100,7 @@ module "datadog_sidecar_logs" {
 
 module "datadog_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
@@ -154,7 +148,7 @@ module "datadog_container_definition" {
 
 module "datadog_fluent_bit_container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.58.1"
+  version = "0.61.2"
 
   count = local.enabled && var.datadog_agent_sidecar_enabled ? 1 : 0
 
