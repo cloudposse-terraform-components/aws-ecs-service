@@ -266,7 +266,7 @@ components:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="requirement_jq"></a> [jq](#requirement\_jq) | >=0.2.0 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
 
@@ -274,7 +274,7 @@ components:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="provider_jq"></a> [jq](#provider\_jq) | >=0.2.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | >= 2.2 |
 
