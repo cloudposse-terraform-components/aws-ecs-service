@@ -175,9 +175,13 @@ locals {
   }
   map_secrets = { for k, v in local.containers_priority_terraform : k => lookup(v, "map_secrets", null) != null ? zipmap(
     keys(lookup(v, "map_secrets", null)),
-    formatlist("%s%s", format("arn:aws:ssm:%s:%s:parameter", var.region, module.roles_to_principals.full_account_map[format("%s-%s", var.tenant, var.stage)]),
-      [for value in values(lookup(v, "map_secrets", null)) : startswith(value, "/") ? value : format("/%s", value)]
-    )
+    [for value in values(lookup(v, "map_secrets", null)) :
+      format(
+        "%s%s",
+        format("arn:aws:ssm:%s:%s:parameter", var.region, module.roles_to_principals.full_account_map[format("%s-%s", var.tenant, var.stage)]),
+        startswith(value, "/") ? value : format("/%s", value)
+      )
+    ]
   ) : null }
 }
 
