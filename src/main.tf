@@ -83,7 +83,7 @@ data "aws_s3_object" "task_definition" {
 
 module "logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
-  version = "0.6.9"
+  version = "0.6.8"
 
   # if we are using datadog firelens we don't need to create a log group
   count = local.enabled && (!var.datadog_agent_sidecar_enabled || !var.datadog_log_method_is_firelens) ? 1 : 0
@@ -182,7 +182,7 @@ locals {
 
 module "container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.2"
+  version = "0.61.1"
 
   for_each = { for k, v in local.containers_priority_terraform : k => v if local.enabled }
 
@@ -229,7 +229,7 @@ module "container_definition" {
   container_depends_on = each.value["container_depends_on"]
   privileged           = each.value["privileged"]
 
-  log_configuration = lookup(lookup(each.value, "log_configuration", {}), "logDriver", {}) == "awslogs" ? merge(lookup(each.value, "log_configuration", {}), {
+  log_configuration = try(lookup(lookup(each.value, "log_configuration", {}), "logDriver", {}), "awslogs") == "awslogs" ? merge(lookup(each.value, "log_configuration", {}), {
     logDriver = "awslogs"
     options = tomap({
       awslogs-region        = var.region,
@@ -252,9 +252,37 @@ locals {
   external_security_group = try(module.security_group[*].outputs.security_group_id, [])
 }
 
+module "task_exec_iam_policy" {
+  count = module.this.enabled && length(var.task_exec_iam_policy) > 0 ? 1 : 0
+
+  source  = "cloudposse/iam-policy/aws"
+  version = "2.0.2"
+
+  iam_policy  = var.task_exec_iam_policy
+  description = "Task Exec IAM Policy for the component ${module.this.id}"
+
+  iam_policy_enabled = true
+  context            = module.this.context
+  attributes         = ["task", "exec", "iam", "policy"]
+}
+
+# Attach the custom exec policy directly
+resource "aws_iam_role_policy_attachment" "custom_exec" {
+  count      = module.this.enabled && length(var.task_exec_iam_policy) > 0 ? 1 : 0
+  role       = module.ecs_alb_service_task[0].task_exec_role_name
+  policy_arn = one(module.task_exec_iam_policy[*].policy_arn)
+}
+
+# Attach additional exec policies from map
+resource "aws_iam_role_policy_attachment" "additional_exec" {
+  for_each   = module.this.enabled ? var.task_exec_policy_arns_map : {}
+  role       = module.ecs_alb_service_task[0].task_exec_role_name
+  policy_arn = each.value
+}
+
 module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
-  version = "0.78.0"
+  version = "0.72.0"
 
   count = local.enabled ? 1 : 0
 
@@ -320,7 +348,8 @@ module "ecs_alb_service_task" {
   service_registries             = local.service_discovery
 
   depends_on = [
-    module.alb_ingress
+    module.alb_ingress,
+    module.task_exec_iam_policy
   ]
 
   context = module.this.context
@@ -342,7 +371,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
 
 module "alb_ingress" {
   source  = "cloudposse/alb-ingress/aws"
-  version = "0.30.0"
+  version = "0.28.0"
 
   count = local.is_alb ? 1 : 0
 
@@ -443,7 +472,7 @@ module "vanity_alias" {
 
 module "ecs_cloudwatch_autoscaling" {
   source  = "cloudposse/ecs-cloudwatch-autoscaling/aws"
-  version = "1.0.0"
+  version = "v1.0.0"
 
   count = local.enabled && var.task_enabled && var.autoscaling_enabled ? 1 : 0
 
@@ -453,6 +482,9 @@ module "ecs_cloudwatch_autoscaling" {
   max_capacity        = lookup(local.task, "max_capacity", 2)
   scale_up_cooldown   = 60
   scale_down_cooldown = 300
+
+  scale_up_step_adjustments   = var.scale_up_step_adjustments
+  scale_down_step_adjustments = var.scale_down_step_adjustments
 
   context = module.this.context
 
@@ -473,7 +505,7 @@ locals {
 
 module "ecs_cloudwatch_sns_alarms" {
   source  = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
-  version = "0.13.2"
+  version = "0.12.3"
   count   = local.enabled && var.autoscaling_enabled ? 1 : 0
 
   cluster_name = module.ecs_cluster.outputs.cluster_name
