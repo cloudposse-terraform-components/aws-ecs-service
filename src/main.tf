@@ -83,7 +83,7 @@ data "aws_s3_object" "task_definition" {
 
 module "logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
-  version = "0.6.8"
+  version = "0.6.9"
 
   # if we are using datadog firelens we don't need to create a log group
   count = local.enabled && (!var.datadog_agent_sidecar_enabled || !var.datadog_log_method_is_firelens) ? 1 : 0
@@ -182,7 +182,7 @@ locals {
 
 module "container_definition" {
   source  = "cloudposse/ecs-container-definition/aws"
-  version = "0.61.1"
+  version = "0.61.2"
 
   for_each = { for k, v in local.containers_priority_terraform : k => v if local.enabled }
 
@@ -282,7 +282,7 @@ resource "aws_iam_role_policy_attachment" "additional_exec" {
 
 module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
-  version = "0.72.0"
+  version = "0.78.0"
 
   count = local.enabled ? 1 : 0
 
@@ -371,7 +371,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
 
 module "alb_ingress" {
   source  = "cloudposse/alb-ingress/aws"
-  version = "0.28.0"
+  version = "0.30.0"
 
   count = local.is_alb ? 1 : 0
 
@@ -472,7 +472,7 @@ module "vanity_alias" {
 
 module "ecs_cloudwatch_autoscaling" {
   source  = "cloudposse/ecs-cloudwatch-autoscaling/aws"
-  version = "v1.0.0"
+  version = "1.0.0"
 
   count = local.enabled && var.task_enabled && var.autoscaling_enabled ? 1 : 0
 
@@ -505,7 +505,7 @@ locals {
 
 module "ecs_cloudwatch_sns_alarms" {
   source  = "cloudposse/ecs-cloudwatch-sns-alarms/aws"
-  version = "0.12.3"
+  version = "0.13.2"
   count   = local.enabled && var.autoscaling_enabled ? 1 : 0
 
   cluster_name = module.ecs_cluster.outputs.cluster_name
