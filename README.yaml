@@ -38,6 +38,49 @@ description: |-
             circuit_breaker_deployment_enabled: true
             circuit_breaker_rollback_enabled: true
   ```
+  This will launch google's `echoserver` using an external image from gcr
+
+  NOTE: Usage of `image` instead of `ecr_image`.
+  ```yaml
+  # stacks/catalog/ecs-service/echoserver.yaml
+  import:
+    - catalog/ecs-service/defaults
+
+  components:
+    terraform:
+      ecs/platform/echoserver/service:
+        metadata:
+          component: ecs-service
+          inherits:
+            - ecs-service/defaults
+        vars:
+          enabled: true
+          name: echoserver
+          public_lb_enabled: false
+          cluster_attributes: [platform]
+          ## Example task_exec_iam_policy
+          # task_exec_iam_policy:
+          #   - policy_id: "EcsServiceEchoServer"
+          #     statements:
+          #       - sid: "EcsServiceEchoServer"
+          #         effect: "Allow"
+          #         actions:
+          #           - "kms:Decrypt"
+          #         resources:
+          #           - "*"
+          containers:
+            service:
+              name: "echoserver"
+              image: gcr.io/google_containers/echoserver:1.10
+              port_mappings:
+                - containerPort: 8080
+                  hostPort: 8080
+                  protocol: tcp
+          task:
+            desired_count: 1
+            task_memory: 512
+            task_cpu: 256
+  ```
 
   This will launch a `kong` service using an ecr image from `mgmt-automation` account.
 
@@ -115,40 +158,7 @@ description: |-
             task_cpu: 256
   ```
 
-  This will launch google's `echoserver` using an external image from gcr
 
-  NOTE: Usage of `image` instead of `ecr_image`.
-
-  ```yaml
-  # stacks/catalog/ecs-service/echoserver.yaml
-  import:
-    - catalog/ecs-service/defaults
-
-  components:
-    terraform:
-      ecs/platform/echoserver/service:
-        metadata:
-          component: ecs-service
-          inherits:
-            - ecs-service/defaults
-        vars:
-          enabled: true
-          name: echoserver
-          public_lb_enabled: true
-          cluster_attributes: [platform]
-          containers:
-            service:
-              name: "echoserver"
-              image: gcr.io/google_containers/echoserver:1.10
-              port_mappings:
-                - containerPort: 8080
-                  hostPort: 8080
-                  protocol: tcp
-          task:
-            desired_count: 1
-            task_memory: 512
-            task_cpu: 256
-  ```
 
   #### Other Domains
 
