@@ -296,7 +296,7 @@ components:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="requirement_jq"></a> [jq](#requirement\_jq) | >=0.2.0 |
 | <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
 
@@ -304,7 +304,7 @@ components:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="provider_jq"></a> [jq](#provider\_jq) | >=0.2.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | >= 2.2 |
 
@@ -312,34 +312,34 @@ components:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.28.0 |
-| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.1 |
-| <a name="module_datadog_configuration"></a> [datadog\_configuration](#module\_datadog\_configuration) | ../datadog-configuration/modules/datadog_keys | n/a |
-| <a name="module_datadog_container_definition"></a> [datadog\_container\_definition](#module\_datadog\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_datadog_fluent_bit_container_definition"></a> [datadog\_fluent\_bit\_container\_definition](#module\_datadog\_fluent\_bit\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.58.1 |
-| <a name="module_datadog_sidecar_logs"></a> [datadog\_sidecar\_logs](#module\_datadog\_sidecar\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.6 |
-| <a name="module_ecs_alb_service_task"></a> [ecs\_alb\_service\_task](#module\_ecs\_alb\_service\_task) | cloudposse/ecs-alb-service-task/aws | 0.72.0 |
-| <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 0.7.3 |
-| <a name="module_ecs_cloudwatch_sns_alarms"></a> [ecs\_cloudwatch\_sns\_alarms](#module\_ecs\_cloudwatch\_sns\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.12.3 |
-| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.30.0 |
+| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
+| <a name="module_datadog_container_definition"></a> [datadog\_container\_definition](#module\_datadog\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
+| <a name="module_datadog_fluent_bit_container_definition"></a> [datadog\_fluent\_bit\_container\_definition](#module\_datadog\_fluent\_bit\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
+| <a name="module_datadog_sidecar_logs"></a> [datadog\_sidecar\_logs](#module\_datadog\_sidecar\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.9 |
+| <a name="module_ecs_alb_service_task"></a> [ecs\_alb\_service\_task](#module\_ecs\_alb\_service\_task) | cloudposse/ecs-alb-service-task/aws | 0.78.0 |
+| <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 1.0.0 |
+| <a name="module_ecs_cloudwatch_sns_alarms"></a> [ecs\_cloudwatch\_sns\_alarms](#module\_ecs\_cloudwatch\_sns\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.13.2 |
+| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_gha_assume_role"></a> [gha\_assume\_role](#module\_gha\_assume\_role) | ../account-map/modules/team-assume-role-policy | n/a |
 | <a name="module_gha_role_name"></a> [gha\_role\_name](#module\_gha\_role\_name) | cloudposse/label/null | 0.25.0 |
-| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_iam_roles"></a> [iam\_roles](#module\_iam\_roles) | ../account-map/modules/iam-roles | n/a |
-| <a name="module_logs"></a> [logs](#module\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.8 |
-| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_logs"></a> [logs](#module\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.9 |
+| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_roles_to_principals"></a> [roles\_to\_principals](#module\_roles\_to\_principals) | ../account-map/modules/roles-to-principals | n/a |
-| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
-| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
+| <a name="module_task_exec_iam_policy"></a> [task\_exec\_iam\_policy](#module\_task\_exec\_iam\_policy) | cloudposse/iam-policy/aws | 2.0.2 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 | <a name="module_vanity_alias"></a> [vanity\_alias](#module\_vanity\_alias) | cloudposse/route53-alias/aws | 0.13.0 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 1.5.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 
 ## Resources
 
@@ -347,6 +347,8 @@ components:
 |------|------|
 | [aws_iam_policy.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.additional_exec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.custom_exec](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_kinesis_stream.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesis_stream) | resource |
 | [aws_s3_bucket_object.task_definition_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object) | resource |
 | [aws_security_group_rule.custom_sg_rules](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -363,6 +365,7 @@ components:
 | [aws_route53_zone.selected_vanity](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/route53_zone) | data source |
 | [aws_s3_object.task_definition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_object) | data source |
 | [aws_s3_objects.mirror](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_objects) | data source |
+| [aws_ssm_parameter.datadog_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameters_by_path.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameters_by_path) | data source |
 | [jq_query.service_domain_query](https://registry.terraform.io/providers/massdriver-cloud/jq/latest/docs/data-sources/query) | data source |
 | [template_file.envs](https://registry.terraform.io/providers/cloudposse/template/latest/docs/data-sources/file) | data source |
@@ -394,12 +397,14 @@ components:
 | <a name="input_cpu_utilization_low_threshold"></a> [cpu\_utilization\_low\_threshold](#input\_cpu\_utilization\_low\_threshold) | The minimum percentage of CPU utilization average | `number` | `20` | no |
 | <a name="input_custom_security_group_rules"></a> [custom\_security\_group\_rules](#input\_custom\_security\_group\_rules) | The list of custom security group rules to add to the service security group | <pre>list(object({<br/>    type        = string<br/>    from_port   = number<br/>    to_port     = number<br/>    protocol    = string<br/>    cidr_blocks = list(string)<br/>    description = optional(string)<br/>  }))</pre> | `[]` | no |
 | <a name="input_datadog_agent_sidecar_enabled"></a> [datadog\_agent\_sidecar\_enabled](#input\_datadog\_agent\_sidecar\_enabled) | Enable the Datadog Agent Sidecar | `bool` | `false` | no |
+| <a name="input_datadog_api_key_ssm_parameter_name"></a> [datadog\_api\_key\_ssm\_parameter\_name](#input\_datadog\_api\_key\_ssm\_parameter\_name) | The SSM Parameter Name containing the Datadog API Key | `string` | `null` | no |
 | <a name="input_datadog_log_method_is_firelens"></a> [datadog\_log\_method\_is\_firelens](#input\_datadog\_log\_method\_is\_firelens) | Datadog logs can be sent via cloudwatch logs (and lambda) or firelens, set this to true to enable firelens via a sidecar container for fluentbit | `bool` | `false` | no |
 | <a name="input_datadog_logging_default_tags_enabled"></a> [datadog\_logging\_default\_tags\_enabled](#input\_datadog\_logging\_default\_tags\_enabled) | Add Default tags to all logs sent to Datadog | `bool` | `true` | no |
 | <a name="input_datadog_logging_tags"></a> [datadog\_logging\_tags](#input\_datadog\_logging\_tags) | Tags to add to all logs sent to Datadog | `map(string)` | `null` | no |
 | <a name="input_datadog_sidecar_containers_logs_enabled"></a> [datadog\_sidecar\_containers\_logs\_enabled](#input\_datadog\_sidecar\_containers\_logs\_enabled) | Enable the Datadog Agent Sidecar to send logs to aws cloudwatch group, requires `datadog_agent_sidecar_enabled` to be true | `bool` | `true` | no |
+| <a name="input_datadog_site"></a> [datadog\_site](#input\_datadog\_site) | The Datadog Site to send logs to | `string` | `"us5.datadoghq.com"` | no |
 | <a name="input_delimiter"></a> [delimiter](#input\_delimiter) | Delimiter to be used between ID elements.<br/>Defaults to `-` (hyphen). Set to `""` to use no delimiter at all. | `string` | `null` | no |
-| <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br/>Map of maps. Keys are names of descriptors. Values are maps of the form<br/>`{<br/>   format = string<br/>   labels = list(string)<br/>}`<br/>(Type is `any` so the map values can later be enhanced to provide additional options.)<br/>`format` is a Terraform format string to be passed to the `format()` function.<br/>`labels` is a list of labels, in order, to pass to `format()` function.<br/>Label values will be normalized before being passed to `format()` so they will be<br/>identical to how they appear in `id`.<br/>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
+| <a name="input_descriptor_formats"></a> [descriptor\_formats](#input\_descriptor\_formats) | Describe additional descriptors to be output in the `descriptors` output map.<br/>Map of maps. Keys are names of descriptors. Values are maps of the form<br/>`{<br/>  format = string<br/>  labels = list(string)<br/>}`<br/>(Type is `any` so the map values can later be enhanced to provide additional options.)<br/>`format` is a Terraform format string to be passed to the `format()` function.<br/>`labels` is a list of labels, in order, to pass to `format()` function.<br/>Label values will be normalized before being passed to `format()` so they will be<br/>identical to how they appear in `id`.<br/>Default is `{}` (`descriptors` output will be empty). | `any` | `{}` | no |
 | <a name="input_ecr_region"></a> [ecr\_region](#input\_ecr\_region) | The region to use for the fully qualified ECR image URL. Defaults to the current region. | `string` | `""` | no |
 | <a name="input_ecr_stage_name"></a> [ecr\_stage\_name](#input\_ecr\_stage\_name) | The ecr stage (account) name to use for the fully qualified ECR image URL. | `string` | `"auto"` | no |
 | <a name="input_ecs_cluster_name"></a> [ecs\_cluster\_name](#input\_ecs\_cluster\_name) | The name of the ECS Cluster this belongs to | `any` | `"ecs"` | no |
@@ -449,6 +454,8 @@ components:
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
 | <a name="input_retention_period"></a> [retention\_period](#input\_retention\_period) | Length of time data records are accessible after they are added to the stream | `number` | `48` | no |
 | <a name="input_s3_mirror_name"></a> [s3\_mirror\_name](#input\_s3\_mirror\_name) | The name of the S3 mirror component | `string` | `null` | no |
+| <a name="input_scale_down_step_adjustments"></a> [scale\_down\_step\_adjustments](#input\_scale\_down\_step\_adjustments) | List of step adjustments for scale down policy | <pre>list(object({<br/>    metric_interval_lower_bound = optional(number)<br/>    metric_interval_upper_bound = optional(number)<br/>    scaling_adjustment          = number<br/>  }))</pre> | <pre>[<br/>  {<br/>    "metric_interval_lower_bound": null,<br/>    "metric_interval_upper_bound": 0,<br/>    "scaling_adjustment": -1<br/>  }<br/>]</pre> | no |
+| <a name="input_scale_up_step_adjustments"></a> [scale\_up\_step\_adjustments](#input\_scale\_up\_step\_adjustments) | List of step adjustments for scale up policy | <pre>list(object({<br/>    metric_interval_lower_bound = optional(number)<br/>    metric_interval_upper_bound = optional(number)<br/>    scaling_adjustment          = number<br/>  }))</pre> | <pre>[<br/>  {<br/>    "metric_interval_lower_bound": 0,<br/>    "metric_interval_upper_bound": null,<br/>    "scaling_adjustment": 1<br/>  }<br/>]</pre> | no |
 | <a name="input_service_connect_configurations"></a> [service\_connect\_configurations](#input\_service\_connect\_configurations) | The list of Service Connect configurations.<br/>See `service_connect_configuration` docs https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service#service_connect_configuration | <pre>list(object({<br/>    enabled   = bool<br/>    namespace = optional(string, null)<br/>    log_configuration = optional(object({<br/>      log_driver = string<br/>      options    = optional(map(string), null)<br/>      secret_option = optional(list(object({<br/>        name       = string<br/>        value_from = string<br/>      })), [])<br/>    }), null)<br/>    service = optional(list(object({<br/>      client_alias = list(object({<br/>        dns_name = string<br/>        port     = number<br/>      }))<br/>      discovery_name        = optional(string, null)<br/>      ingress_port_override = optional(number, null)<br/>      port_name             = string<br/>    })), [])<br/>  }))</pre> | `[]` | no |
 | <a name="input_service_registries"></a> [service\_registries](#input\_service\_registries) | The list of Service Registries.<br/>See `service_registries` docs https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service#service_registries | <pre>list(object({<br/>    namespace      = string<br/>    registry_arn   = optional(string)<br/>    port           = optional(number)<br/>    container_name = optional(string)<br/>    container_port = optional(number)<br/>  }))</pre> | `[]` | no |
 | <a name="input_shard_count"></a> [shard\_count](#input\_shard\_count) | Number of shards that the stream will use | `number` | `1` | no |
@@ -464,6 +471,7 @@ components:
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags (e.g. `{'BusinessUnit': 'XYZ'}`).<br/>Neither the tag keys nor the tag values will be modified by this module. | `map(string)` | `{}` | no |
 | <a name="input_task"></a> [task](#input\_task) | Feed inputs into ecs\_alb\_service\_task module | <pre>object({<br/>    task_cpu                = optional(number)<br/>    task_memory             = optional(number)<br/>    task_role_arn           = optional(string, "")<br/>    pid_mode                = optional(string, null)<br/>    ipc_mode                = optional(string, null)<br/>    network_mode            = optional(string)<br/>    propagate_tags          = optional(string)<br/>    assign_public_ip        = optional(bool, false)<br/>    use_alb_security_groups = optional(bool, true)<br/>    launch_type             = optional(string, "FARGATE")<br/>    scheduling_strategy     = optional(string, "REPLICA")<br/>    capacity_provider_strategies = optional(list(object({<br/>      capacity_provider = string<br/>      weight            = number<br/>      base              = number<br/>    })), [])<br/><br/>    deployment_minimum_healthy_percent = optional(number, null)<br/>    deployment_maximum_percent         = optional(number, null)<br/>    desired_count                      = optional(number, 0)<br/>    min_capacity                       = optional(number, 1)<br/>    max_capacity                       = optional(number, 2)<br/>    wait_for_steady_state              = optional(bool, true)<br/>    circuit_breaker_deployment_enabled = optional(bool, true)<br/>    circuit_breaker_rollback_enabled   = optional(bool, true)<br/><br/>    ecs_service_enabled = optional(bool, true)<br/>    bind_mount_volumes = optional(list(object({<br/>      name      = string<br/>      host_path = string<br/>    })), [])<br/>    efs_volumes = optional(list(object({<br/>      host_path = string<br/>      name      = string<br/>      efs_volume_configuration = list(object({<br/>        file_system_id          = string<br/>        root_directory          = string<br/>        transit_encryption      = string<br/>        transit_encryption_port = string<br/>        authorization_config = list(object({<br/>          access_point_id = string<br/>          iam             = string<br/>        }))<br/>      }))<br/>    })), [])<br/>    efs_component_volumes = optional(list(object({<br/>      host_path = string<br/>      name      = string<br/>      efs_volume_configuration = list(object({<br/>        component   = optional(string, "efs")<br/>        tenant      = optional(string, null)<br/>        environment = optional(string, null)<br/>        stage       = optional(string, null)<br/><br/>        root_directory          = string<br/>        transit_encryption      = string<br/>        transit_encryption_port = string<br/>        authorization_config = list(object({<br/>          access_point_id = string<br/>          iam             = string<br/>        }))<br/>      }))<br/>    })), [])<br/>    docker_volumes = optional(list(object({<br/>      host_path = string<br/>      name      = string<br/>      docker_volume_configuration = list(object({<br/>        autoprovision = bool<br/>        driver        = string<br/>        driver_opts   = map(string)<br/>        labels        = map(string)<br/>        scope         = string<br/>      }))<br/>    })), [])<br/>    fsx_volumes = optional(list(object({<br/>      host_path = string<br/>      name      = string<br/>      fsx_windows_file_server_volume_configuration = list(object({<br/>        file_system_id = string<br/>        root_directory = string<br/>        authorization_config = list(object({<br/>          credentials_parameter = string<br/>          domain                = string<br/>        }))<br/>      }))<br/>    })), [])<br/>  })</pre> | `{}` | no |
 | <a name="input_task_enabled"></a> [task\_enabled](#input\_task\_enabled) | Whether or not to use the ECS task module | `bool` | `true` | no |
+| <a name="input_task_exec_iam_policy"></a> [task\_exec\_iam\_policy](#input\_task\_exec\_iam\_policy) | IAM policy as list of Terraform objects, compatible with Terraform `aws_iam_policy_document` data source<br/>except that `source_policy_documents` and `override_policy_documents` are not included.<br/>Use inputs `iam_source_policy_documents` and `iam_override_policy_documents` for that. | <pre>list(object({<br/>    policy_id = optional(string, null)<br/>    version   = optional(string, null)<br/>    statements = list(object({<br/>      sid           = optional(string, null)<br/>      effect        = optional(string, null)<br/>      actions       = optional(list(string), null)<br/>      not_actions   = optional(list(string), null)<br/>      resources     = optional(list(string), null)<br/>      not_resources = optional(list(string), null)<br/>      conditions = optional(list(object({<br/>        test     = string<br/>        variable = string<br/>        values   = list(string)<br/>      })), [])<br/>      principals = optional(list(object({<br/>        type        = string<br/>        identifiers = list(string)<br/>      })), [])<br/>      not_principals = optional(list(object({<br/>        type        = string<br/>        identifiers = list(string)<br/>      })), [])<br/>    }))<br/>  }))</pre> | `[]` | no |
 | <a name="input_task_exec_policy_arns_map"></a> [task\_exec\_policy\_arns\_map](#input\_task\_exec\_policy\_arns\_map) | A map of name to IAM Policy ARNs to attach to the generated task execution role.<br/>The names are arbitrary, but must be known at plan time. The purpose of the name<br/>is so that changes to one ARN do not cause a ripple effect on the other ARNs.<br/>If you cannot provide unique names known at plan time, use `task_exec_policy_arns` instead. | `map(string)` | `{}` | no |
 | <a name="input_task_iam_role_component"></a> [task\_iam\_role\_component](#input\_task\_iam\_role\_component) | A component that outputs an iam\_role module as 'role' for adding to the service as a whole. | `string` | `null` | no |
 | <a name="input_task_policy_arns"></a> [task\_policy\_arns](#input\_task\_policy\_arns) | The IAM policy ARNs to attach to the ECS task IAM role | `list(string)` | <pre>[<br/>  "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly",<br/>  "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"<br/>]</pre> | no |
@@ -518,7 +526,7 @@ components:
 > <summary><strong>Watch demo of using Atmos with Terraform</strong></summary>
 > <img src="https://github.com/cloudposse/atmos/blob/main/docs/demo.gif?raw=true"/><br/>
 > <i>Example of running <a href="https://atmos.tools"><code>atmos</code></a> to manage infrastructure from our <a href="https://atmos.tools/quick-start/">Quick Start</a> tutorial.</i>
-> </detalis>
+> </details>
 
 
 
