@@ -234,7 +234,7 @@ module "container_definition" {
   container_depends_on = each.value["container_depends_on"]
   privileged           = each.value["privileged"]
 
-  log_configuration = lookup(lookup(each.value, "log_configuration", {}), "logDriver", {}) == "awslogs" ? merge(lookup(each.value, "log_configuration", {}), {
+  log_configuration = try(lookup(lookup(each.value, "log_configuration", {}), "logDriver", {}), "awslogs") == "awslogs" ? merge(lookup(each.value, "log_configuration", {}), {
     logDriver = "awslogs"
     options = tomap({
       awslogs-region        = var.region,
@@ -255,6 +255,34 @@ module "container_definition" {
 locals {
   awslogs_group           = var.datadog_log_method_is_firelens ? "" : join("", module.logs[*].log_group_name)
   external_security_group = try(module.security_group[*].outputs.security_group_id, [])
+}
+
+module "task_exec_iam_policy" {
+  count = module.this.enabled && length(var.task_exec_iam_policy) > 0 ? 1 : 0
+
+  source  = "cloudposse/iam-policy/aws"
+  version = "2.0.2"
+
+  iam_policy  = var.task_exec_iam_policy
+  description = "Task Exec IAM Policy for the component ${module.this.id}"
+
+  iam_policy_enabled = true
+  context            = module.this.context
+  attributes         = ["task", "exec", "iam", "policy"]
+}
+
+# Attach the custom exec policy directly
+resource "aws_iam_role_policy_attachment" "custom_exec" {
+  count      = module.this.enabled && length(var.task_exec_iam_policy) > 0 ? 1 : 0
+  role       = module.ecs_alb_service_task[0].task_exec_role_name
+  policy_arn = one(module.task_exec_iam_policy[*].policy_arn)
+}
+
+# Attach additional exec policies from map
+resource "aws_iam_role_policy_attachment" "additional_exec" {
+  for_each   = module.this.enabled ? var.task_exec_policy_arns_map : {}
+  role       = module.ecs_alb_service_task[0].task_exec_role_name
+  policy_arn = each.value
 }
 
 module "ecs_alb_service_task" {
@@ -325,7 +353,8 @@ module "ecs_alb_service_task" {
   service_registries             = local.service_discovery
 
   depends_on = [
-    module.alb_ingress
+    module.alb_ingress,
+    module.task_exec_iam_policy
   ]
 
   context = module.this.context
@@ -458,6 +487,9 @@ module "ecs_cloudwatch_autoscaling" {
   max_capacity        = lookup(local.task, "max_capacity", 2)
   scale_up_cooldown   = 60
   scale_down_cooldown = 300
+
+  scale_up_step_adjustments   = var.scale_up_step_adjustments
+  scale_down_step_adjustments = var.scale_down_step_adjustments
 
   context = module.this.context
 
