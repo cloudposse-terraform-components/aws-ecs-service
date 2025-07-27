@@ -707,3 +707,9 @@ variable "scale_down_step_adjustments" {
     scaling_adjustment          = -1
   }]
 }
+
+variable "vpc_component_name" {
+  type        = string
+  description = "The name of a VPC component"
+  default     = "vpc"
+}
