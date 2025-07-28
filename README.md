@@ -483,6 +483,7 @@ components:
 | <a name="input_use_rds_client_sg"></a> [use\_rds\_client\_sg](#input\_use\_rds\_client\_sg) | Use the RDS client security group | `bool` | `false` | no |
 | <a name="input_vanity_alias"></a> [vanity\_alias](#input\_vanity\_alias) | The vanity aliases to use for the public LB. | `list(string)` | `[]` | no |
 | <a name="input_vanity_domain"></a> [vanity\_domain](#input\_vanity\_domain) | Whether to use the vanity domain alias for the service | `string` | `null` | no |
+| <a name="input_vpc_component_name"></a> [vpc\_component\_name](#input\_vpc\_component\_name) | The name of a VPC component | `string` | `"vpc"` | no |
 | <a name="input_zone_component"></a> [zone\_component](#input\_zone\_component) | The component name to look up service domain remote-state on | `string` | `"dns-delegated"` | no |
 | <a name="input_zone_component_output"></a> [zone\_component\_output](#input\_zone\_component\_output) | A json query to use to get the zone domain from the remote state. See | `string` | `".default_domain_name"` | no |
 
