@@ -100,7 +100,10 @@ variable "containers" {
       readOnly      = optional(bool)
     })), [])
   }))
-  description = "Feed inputs into container definition module"
+  description = <<EOT
+Inputs for the container definition module.
+`user`: The user to run as inside the container. Can be any of these formats: user, user:group, uid, uid:gid, user:gid, uid:group. The default (null) will use the container's configured `USER` directive or root if not set."
+EOT
   default     = {}
 }
 

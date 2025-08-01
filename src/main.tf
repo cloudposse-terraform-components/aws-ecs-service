@@ -341,7 +341,6 @@ module "ecs_alb_service_task" {
   ecs_service_enabled                = lookup(local.task, "ecs_service_enabled", true)
   task_role_arn                      = lookup(local.task, "task_role_arn", one(module.iam_role[*]["outputs"]["role"]["arn"]))
   capacity_provider_strategies       = lookup(local.task, "capacity_provider_strategies")
-  user                               = lookup(local.task, "user", null)
 
   task_exec_policy_arns_map = var.task_exec_policy_arns_map
 
