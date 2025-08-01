@@ -233,6 +233,7 @@ module "container_definition" {
   docker_labels        = each.value["docker_labels"]
   container_depends_on = each.value["container_depends_on"]
   privileged           = each.value["privileged"]
+  user                 = each.value["user"]
 
   log_configuration = try(lookup(lookup(each.value, "log_configuration", {}), "logDriver", {}), "awslogs") == "awslogs" ? merge(lookup(each.value, "log_configuration", {}), {
     logDriver = "awslogs"
