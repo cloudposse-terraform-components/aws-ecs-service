@@ -605,7 +605,7 @@ data "aws_ecs_task_definition" "created_task" {
 }
 
 locals {
-  created_task_definition = local.s3_mirroring_enabled ? data.aws_ecs_task_definition.created_task[0] : {}
+  created_task_definition = local.s3_mirroring_enabled ? data.aws_ecs_task_definition.created_task[0] : null
   task_template = local.s3_mirroring_enabled ? {
     containerDefinitions = local.container_definition
     family               = lookup(local.created_task_definition, "family", null),
