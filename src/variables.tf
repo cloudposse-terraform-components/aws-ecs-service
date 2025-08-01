@@ -56,6 +56,7 @@ variable "containers" {
     essential                = optional(bool, true)
     readonly_root_filesystem = optional(bool, null)
     privileged               = optional(bool, null)
+    user                     = optional(string, null)
     container_depends_on = optional(list(object({
       containerName = string
       condition     = string # START, COMPLETE, SUCCESS, HEALTHY
