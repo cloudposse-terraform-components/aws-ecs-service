@@ -67,3 +67,13 @@ output "task_definition_revision" {
   value       = one(module.ecs_alb_service_task[*].task_definition_revision)
   description = "The task definition revision"
 }
+
+output "service_name" {
+  value       = one(module.ecs_alb_service_task[*].service_name)
+  description = "The ECS service name"
+}
+
+output "service_arn" {
+  value       = one(module.ecs_alb_service_task[*].service_arn)
+  description = "The ECS service ARN"
+}

@@ -391,6 +391,7 @@ components:
 | <a name="input_health_check_matcher"></a> [health\_check\_matcher](#input\_health\_check\_matcher) | The HTTP response codes to indicate a healthy check | `string` | `"200-404"` | no |
 | <a name="input_health_check_path"></a> [health\_check\_path](#input\_health\_check\_path) | The destination for the health check request | `string` | `"/health"` | no |
 | <a name="input_health_check_port"></a> [health\_check\_port](#input\_health\_check\_port) | The port to use to connect with the target. Valid values are either ports 1-65536, or `traffic-port`. Defaults to `traffic-port` | `string` | `"traffic-port"` | no |
+| <a name="input_health_check_protocol"></a> [health\_check\_protocol](#input\_health\_check\_protocol) | The protocol to use to connect with the target. Defaults to HTTP. Not applicable when target\_type is lambda | `string` | `"HTTP"` | no |
 | <a name="input_health_check_timeout"></a> [health\_check\_timeout](#input\_health\_check\_timeout) | The amount of time to wait in seconds before failing a health check request | `number` | `10` | no |
 | <a name="input_health_check_unhealthy_threshold"></a> [health\_check\_unhealthy\_threshold](#input\_health\_check\_unhealthy\_threshold) | The number of consecutive health check failures required before unhealthy | `number` | `2` | no |
 | <a name="input_http_protocol"></a> [http\_protocol](#input\_http\_protocol) | Which http protocol to use in outputs and SSM url params. This value is ignored if a load balancer is not used. If it is `null`, the redirect value from the ALB determines the protocol. | `string` | `null` | no |
@@ -419,6 +420,8 @@ components:
 | <a name="input_name"></a> [name](#input\_name) | ID element. Usually the component or solution name, e.g. 'app' or 'jenkins'.<br/>This is the only ID element not also included as a `tag`.<br/>The "name" tag is set to the full `id` string. There is no tag with the value of the `name` input. | `string` | `null` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | ID element. Usually an abbreviation of your organization name, e.g. 'eg' or 'cp', to help ensure generated IDs are globally unique | `string` | `null` | no |
 | <a name="input_nlb_name"></a> [nlb\_name](#input\_nlb\_name) | The name of the NLB this service should attach to | `string` | `null` | no |
+| <a name="input_port"></a> [port](#input\_port) | The port for the created ALB target group. Defaults to 80 | `number` | `80` | no |
+| <a name="input_protocol"></a> [protocol](#input\_protocol) | The protocol for the created ALB target group. Defaults to HTTP | `string` | `"HTTP"` | no |
 | <a name="input_rds_name"></a> [rds\_name](#input\_rds\_name) | The name of the RDS database this service should allow access to | `any` | `null` | no |
 | <a name="input_regex_replace_chars"></a> [regex\_replace\_chars](#input\_regex\_replace\_chars) | Terraform regular expression (regex) string.<br/>Characters matching the regex will be removed from the ID elements.<br/>If not set, `"/[^a-zA-Z0-9-]/"` is used to remove all characters other than hyphens, letters and digits. | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | AWS Region | `string` | n/a | yes |
@@ -470,7 +473,9 @@ components:
 | <a name="output_lb_listener_https"></a> [lb\_listener\_https](#output\_lb\_listener\_https) | Selected LB HTTPS Listener |
 | <a name="output_lb_sg_id"></a> [lb\_sg\_id](#output\_lb\_sg\_id) | Selected LB SG ID |
 | <a name="output_logs"></a> [logs](#output\_logs) | Output of cloudwatch logs module |
+| <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | The ECS service ARN |
 | <a name="output_service_image"></a> [service\_image](#output\_service\_image) | The image of the service container |
+| <a name="output_service_name"></a> [service\_name](#output\_service\_name) | The ECS service name |
 | <a name="output_ssm_key_prefix"></a> [ssm\_key\_prefix](#output\_ssm\_key\_prefix) | SSM prefix |
 | <a name="output_ssm_parameters"></a> [ssm\_parameters](#output\_ssm\_parameters) | SSM parameters for the ECS Service |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | Selected subnet IDs |

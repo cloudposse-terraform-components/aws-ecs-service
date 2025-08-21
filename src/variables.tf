@@ -402,6 +402,37 @@ variable "health_check_matcher" {
   description = "The HTTP response codes to indicate a healthy check"
 }
 
+variable "health_check_protocol" {
+  type        = string
+  default     = "HTTP"
+  description = "The protocol to use to connect with the target. Defaults to HTTP. Not applicable when target_type is lambda"
+  validation {
+    condition     = contains(["HTTP", "HTTPS", "TCP", "TLS", "UDP", "TCP_UDP", "GENEVE"], var.health_check_protocol)
+    error_message = "Allowed values for health_check_protocol are HTTP, HTTPS, TCP, TLS, UDP, TCP_UDP, and GENEVE."
+  }
+}
+
+variable "protocol" {
+  type        = string
+  default     = "HTTP"
+  description = "The protocol for the created ALB target group. Defaults to HTTP"
+  validation {
+    condition     = contains(["HTTP", "HTTPS", "TCP", "TLS", "UDP", "TCP_UDP", "GENEVE"], var.protocol)
+    error_message = "Allowed values for protocol are HTTP, HTTPS, TCP, TLS, UDP, TCP_UDP, and GENEVE."
+  }
+}
+
+variable "port" {
+  type        = number
+  default     = 80
+  description = "The port for the created ALB target group. Defaults to 80"
+  validation {
+    condition     = var.port >= 1 && var.port <= 65535
+    error_message = "Port must be between 1 and 65535."
+  }
+}
+
+
 variable "lb_catch_all" {
   type        = bool
   description = "Should this service act as catch all for all subdomain hosts of the vanity domain"
