@@ -1,8 +1,0 @@
-# These are mocked components that are used to test the use cases
-# They will simply return outputs the we need
-
-import:
-  - catalog/requirements/vpc
-  - catalog/requirements/dns-primary
-  - catalog/requirements/dns-delegated
-  - catalog/requirements/ecs-cluster

@@ -1,8 +1,0 @@
-components:
-  terraform:
-    dns-delegated:
-      metadata:
-        component: dns-delegated
-      vars:
-        zone_config: [] # These are added in tests
-        request_acm_certificate: true
