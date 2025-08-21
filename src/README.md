@@ -473,7 +473,9 @@ components:
 | <a name="output_lb_listener_https"></a> [lb\_listener\_https](#output\_lb\_listener\_https) | Selected LB HTTPS Listener |
 | <a name="output_lb_sg_id"></a> [lb\_sg\_id](#output\_lb\_sg\_id) | Selected LB SG ID |
 | <a name="output_logs"></a> [logs](#output\_logs) | Output of cloudwatch logs module |
+| <a name="output_service_arn"></a> [service\_arn](#output\_service\_arn) | The ECS service ARN |
 | <a name="output_service_image"></a> [service\_image](#output\_service\_image) | The image of the service container |
+| <a name="output_service_name"></a> [service\_name](#output\_service\_name) | The ECS service name |
 | <a name="output_ssm_key_prefix"></a> [ssm\_key\_prefix](#output\_ssm\_key\_prefix) | SSM prefix |
 | <a name="output_ssm_parameters"></a> [ssm\_parameters](#output\_ssm\_parameters) | SSM parameters for the ECS Service |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | Selected subnet IDs |

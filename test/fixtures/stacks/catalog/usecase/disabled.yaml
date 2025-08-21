@@ -1,0 +1,8 @@
+components:
+  terraform:
+    ecs-service/disabled:
+      metadata:
+        component: ecs-service
+      vars:
+        enabled: false
+        name: ecs-service-disabled
