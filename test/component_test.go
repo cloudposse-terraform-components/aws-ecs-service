@@ -123,18 +123,26 @@ func (s *ComponentSuite) SetupSuite() {
 func TestRunSuite(t *testing.T) {
 	suite := new(ComponentSuite)
 
+	suite.AddDependency(t, "vpc", "default-test", nil)
+
+	randDomain := strings.ToLower(random.UniqueId())
+	primaryDomainName := randDomain + ".components.cptest.test-automation.app"
+	dnsPrimaryInputs := map[string]interface{}{
+		"domain_names": []string{primaryDomainName},
+	}
+	suite.AddDependency(t, "dns-primary", "default-test", &dnsPrimaryInputs)
+
 	subdomain := strings.ToLower(random.UniqueId())
-	inputs := map[string]interface{}{
+	dnsDelegatedInputs := map[string]interface{}{
 		"zone_config": []map[string]interface{}{
 			{
 				"subdomain": subdomain,
-				"zone_name": "components.cptest.test-automation.app",
+				"zone_name": primaryDomainName,
 			},
 		},
 	}
+	suite.AddDependency(t, "dns-delegated", "default-test", &dnsDelegatedInputs)
 
-	suite.AddDependency(t, "vpc", "default-test", nil)
-	suite.AddDependency(t, "dns-delegated", "default-test", &inputs)
 	suite.AddDependency(t, "ecs-cluster", "default-test", nil)
 	helper.Run(t, suite)
 }

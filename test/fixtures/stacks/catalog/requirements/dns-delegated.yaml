@@ -4,7 +4,5 @@ components:
       metadata:
         component: dns-delegated
       vars:
-        zone_config:
-          - subdomain: test
-            zone_name: example.net
+        zone_config: [] # These are added in tests
         request_acm_certificate: true
