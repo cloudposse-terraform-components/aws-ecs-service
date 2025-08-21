@@ -1,0 +1,11 @@
+components:
+  terraform:
+    ecs-cluster:
+      vars:
+        name: ecs
+        capacity_providers_fargate: true
+        capacity_providers_fargate_spot: true
+        capacity_providers_ec2:
+          default:
+            instance_type: t3.small
+            max_size: 2

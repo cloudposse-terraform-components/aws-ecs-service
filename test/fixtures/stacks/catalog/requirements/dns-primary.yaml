@@ -1,0 +1,8 @@
+components:
+  terraform:
+    dns-primary:
+      metadata:
+        component: dns-primary
+      vars:
+        domain_names: [] # These are added in tests
+        record_config: []
