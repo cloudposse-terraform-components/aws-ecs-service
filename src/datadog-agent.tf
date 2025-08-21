@@ -119,7 +119,7 @@ module "datadog_container_definition" {
     })
   }
 
-  // Datadog DogStatsD/tracing ports
+  # Datadog DogStatsD/tracing ports
   port_mappings = [{
     containerPort = 8125
     hostPort      = 8125

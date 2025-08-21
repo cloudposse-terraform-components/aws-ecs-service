@@ -4,11 +4,11 @@ locals {
 
   s3_mirroring_enabled = local.enabled && try(length(var.s3_mirror_name) > 0, false)
 
-  service_container = lookup(var.containers, "service")
+  service_container = try(var.containers["service"], null)
   # Get the first containerPort in var.container["service"]["port_mappings"]
-  container_port = try(lookup(local.service_container, "port_mappings")[0].containerPort, null)
+  container_port = try(local.service_container["port_mappings"][0].containerPort, null)
 
-  assign_public_ip = lookup(local.task, "assign_public_ip", false)
+  assign_public_ip = try(local.task["assign_public_ip"], false)
 
   container_definition = concat([
     for container in module.container_definition :
@@ -26,7 +26,7 @@ locals {
 
   kinesis_kms_id = try(one(data.aws_kms_alias.selected[*].id), null)
 
-  use_alb_security_group = local.is_alb ? lookup(local.task, "use_alb_security_group", true) : false
+  use_alb_security_group = local.is_alb ? try(local.task["use_alb_security_group"], true) : false
 
   task_definition_s3_key     = format("%s/%s/task-definition.json", module.ecs_cluster.outputs.cluster_name, module.this.id)
   task_definition_use_s3     = local.enabled && local.s3_mirroring_enabled && contains(flatten(data.aws_s3_objects.mirror[*].keys), local.task_definition_s3_key)
@@ -36,9 +36,9 @@ locals {
 
   task_s3 = local.task_definition_use_s3 ? {
     launch_type  = try(local.task_definition_s3.requiresCompatibilities[0], null)
-    network_mode = lookup(local.task_definition_s3, "networkMode", null)
-    task_memory  = try(tonumber(lookup(local.task_definition_s3, "memory")), null)
-    task_cpu     = try(tonumber(lookup(local.task_definition_s3, "cpu")), null)
+    network_mode = try(local.task_definition_s3["networkMode"], null)
+    task_memory  = try(tonumber(local.task_definition_s3["memory"]), null)
+    task_cpu     = try(tonumber(local.task_definition_s3["cpu"]), null)
   } : {}
 
   task = merge(var.task, local.task_s3)
@@ -66,7 +66,7 @@ locals {
       ]
     }
   ]
-  efs_volumes = concat(lookup(local.task, "efs_volumes", []), local.efs_component_merged)
+  efs_volumes = concat(try(local.task["efs_volumes"], []), local.efs_component_merged)
 }
 
 data "aws_s3_objects" "mirror" {
@@ -193,12 +193,12 @@ module "container_definition" {
 
   container_name = each.value["name"]
 
-  container_image = lookup(each.value, "ecr_image", null) != null ? format(
+  container_image = try(each.value["ecr_image"], null) != null ? format(
     "%s.dkr.ecr.%s.amazonaws.com/%s",
     module.roles_to_principals.full_account_map[var.ecr_stage_name],
     coalesce(var.ecr_region, var.region),
-    lookup(local.containers_priority_s3[each.key], "ecr_image", null)
-  ) : lookup(local.containers_priority_s3[each.key], "image")
+    try(local.containers_priority_s3[each.key]["ecr_image"], null)
+  ) : try(local.containers_priority_s3[each.key]["image"], null)
 
   container_memory             = each.value["memory"]
   container_memory_reservation = each.value["memory_reservation"]
@@ -207,7 +207,7 @@ module "container_definition" {
   readonly_root_filesystem     = each.value["readonly_root_filesystem"]
   mount_points                 = each.value["mount_points"]
 
-  map_environment = lookup(each.value, "map_environment", null) != null ? merge(
+  map_environment = try(each.value["map_environment"], null) != null ? merge(
     { for k, v in local.env_map_subst : split(",", k)[1] => v if split(",", k)[0] == each.key },
     { "APP_ENV" = format("%s-%s-%s-%s", var.namespace, var.tenant, var.environment, var.stage) },
     { "RUNTIME_ENV" = format("%s-%s-%s", var.namespace, var.tenant, var.stage) },
@@ -219,7 +219,7 @@ module "container_definition" {
       "DD_ENV"                 = var.stage,
       "DD_PROFILING_EXPORTERS" = "agent"
     } : {},
-    lookup(each.value, "map_environment", null)
+    try(each.value["map_environment"], null)
   ) : null
 
   map_secrets = local.map_secrets[each.key]
@@ -245,7 +245,7 @@ module "container_definition" {
     # if we are not using awslogs, we execute this line, which if we have dd enabled, means we are using firelens, so merge that config in.
   }) : merge(lookup(each.value, "log_configuration", {}), local.datadog_logconfiguration_firelens)
 
-  firelens_configuration = lookup(each.value, "firelens_configuration", null)
+  firelens_configuration = try(each.value["firelens_configuration"], null)
 
 
   # escape hatch for anything not specifically described above or unsupported by the upstream module
@@ -311,7 +311,7 @@ module "ecs_alb_service_task" {
   # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service#load_balancer
   ecs_load_balancers = local.use_lb ? [
     {
-      container_name   = lookup(local.service_container, "name"),
+      container_name   = try(local.service_container["name"], null),
       container_port   = local.container_port,
       target_group_arn = local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb.default_target_group_arn
       # not required since elb is unused but must be set to null
@@ -320,34 +320,34 @@ module "ecs_alb_service_task" {
   ] : []
 
   assign_public_ip                   = local.assign_public_ip
-  ignore_changes_task_definition     = lookup(local.task, "ignore_changes_task_definition", false)
-  ignore_changes_desired_count       = lookup(local.task, "ignore_changes_desired_count", true)
-  launch_type                        = lookup(local.task, "launch_type", "FARGATE")
-  scheduling_strategy                = lookup(local.task, "scheduling_strategy", "REPLICA")
-  network_mode                       = lookup(local.task, "network_mode", "awsvpc")
+  ignore_changes_task_definition     = try(local.task["ignore_changes_task_definition"], false)
+  ignore_changes_desired_count       = try(local.task["ignore_changes_desired_count"], true)
+  launch_type                        = try(local.task["launch_type"], "FARGATE")
+  scheduling_strategy                = try(local.task["scheduling_strategy"], "REPLICA")
+  network_mode                       = try(local.task["network_mode"], "awsvpc")
   pid_mode                           = local.task["pid_mode"]
   ipc_mode                           = local.task["ipc_mode"]
-  propagate_tags                     = lookup(local.task, "propagate_tags", "SERVICE")
-  deployment_minimum_healthy_percent = lookup(local.task, "deployment_minimum_healthy_percent", null)
-  deployment_maximum_percent         = lookup(local.task, "deployment_maximum_percent", null)
-  deployment_controller_type         = lookup(local.task, "deployment_controller_type", null)
-  desired_count                      = lookup(local.task, "desired_count", 0)
-  task_memory                        = lookup(local.task, "task_memory", null)
-  task_cpu                           = lookup(local.task, "task_cpu", null)
-  wait_for_steady_state              = lookup(local.task, "wait_for_steady_state", true)
-  circuit_breaker_deployment_enabled = lookup(local.task, "circuit_breaker_deployment_enabled", true)
-  circuit_breaker_rollback_enabled   = lookup(local.task, "circuit_breaker_rollback_enabled", true)
+  propagate_tags                     = try(local.task["propagate_tags"], "SERVICE")
+  deployment_minimum_healthy_percent = try(local.task["deployment_minimum_healthy_percent"], null)
+  deployment_maximum_percent         = try(local.task["deployment_maximum_percent"], null)
+  deployment_controller_type         = try(local.task["deployment_controller_type"], null)
+  desired_count                      = try(local.task["desired_count"], 0)
+  task_memory                        = try(local.task["task_memory"], null)
+  task_cpu                           = try(local.task["task_cpu"], null)
+  wait_for_steady_state              = try(local.task["wait_for_steady_state"], true)
+  circuit_breaker_deployment_enabled = try(local.task["circuit_breaker_deployment_enabled"], true)
+  circuit_breaker_rollback_enabled   = try(local.task["circuit_breaker_rollback_enabled"], true)
   task_policy_arns                   = var.iam_policy_enabled ? concat(var.task_policy_arns, aws_iam_policy.default[*].arn) : var.task_policy_arns
-  ecs_service_enabled                = lookup(local.task, "ecs_service_enabled", true)
-  task_role_arn                      = lookup(local.task, "task_role_arn", one(module.iam_role[*]["outputs"]["role"]["arn"]))
-  capacity_provider_strategies       = lookup(local.task, "capacity_provider_strategies")
+  ecs_service_enabled                = try(local.task["ecs_service_enabled"], true)
+  task_role_arn                      = try(local.task["task_role_arn"], one(module.iam_role[*]["outputs"]["role"]["arn"]))
+  capacity_provider_strategies       = try(local.task["capacity_provider_strategies"], [])
 
   task_exec_policy_arns_map = var.task_exec_policy_arns_map
 
   efs_volumes        = local.efs_volumes
-  docker_volumes     = lookup(local.task, "docker_volumes", [])
-  fsx_volumes        = lookup(local.task, "fsx_volumes", [])
-  bind_mount_volumes = lookup(local.task, "bind_mount_volumes", [])
+  docker_volumes     = try(local.task["docker_volumes"], [])
+  fsx_volumes        = try(local.task["fsx_volumes"], [])
+  bind_mount_volumes = try(local.task["bind_mount_volumes"], [])
 
   exec_enabled                   = var.exec_enabled
   service_connect_configurations = local.service_connect_configurations
@@ -362,7 +362,7 @@ module "ecs_alb_service_task" {
 }
 
 resource "aws_security_group_rule" "custom_sg_rules" {
-  for_each = local.enabled && var.custom_security_group_rules != [] ? {
+  for_each = local.enabled && length(var.custom_security_group_rules) > 0 ? {
     for sg_rule in var.custom_security_group_rules :
     format("%s_%s_%s", sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
   } : {}
@@ -394,10 +394,13 @@ module "alb_ingress" {
   health_check_matcher             = var.health_check_matcher
   health_check_path                = var.health_check_path
   health_check_port                = var.health_check_port
+  health_check_protocol            = var.health_check_protocol
   health_check_healthy_threshold   = var.health_check_healthy_threshold
   health_check_unhealthy_threshold = var.health_check_unhealthy_threshold
   health_check_interval            = var.health_check_interval
   health_check_timeout             = var.health_check_timeout
+  protocol                         = var.protocol
+  port                             = var.port
 
   stickiness_enabled         = var.stickiness_enabled
   stickiness_type            = var.stickiness_type

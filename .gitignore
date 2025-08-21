@@ -7,7 +7,6 @@ aws-assumed-role/
 *.iml
 .direnv
 .envrc
-.atmos/
 
 # Compiled and auto-generated files
 # Note that the leading "**/" appears necessary for Docker even if not for Git
@@ -75,3 +74,4 @@ github/
 *.ovpn
 
 *.zip
+account-map/
