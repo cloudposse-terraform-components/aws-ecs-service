@@ -8,7 +8,6 @@ tags:
 # Component: `ecs-service`
 
 This component is responsible for creating an ECS service.
-
 ## Usage
 
 **Stack Level**: Regional
@@ -41,6 +40,49 @@ components:
           wait_for_steady_state: true
           circuit_breaker_deployment_enabled: true
           circuit_breaker_rollback_enabled: true
+```
+This will launch google's `echoserver` using an external image from gcr
+
+NOTE: Usage of `image` instead of `ecr_image`.
+```yaml
+# stacks/catalog/ecs-service/echoserver.yaml
+import:
+  - catalog/ecs-service/defaults
+
+components:
+  terraform:
+    ecs/platform/echoserver/service:
+      metadata:
+        component: ecs-service
+        inherits:
+          - ecs-service/defaults
+      vars:
+        enabled: true
+        name: echoserver
+        public_lb_enabled: false
+        cluster_attributes: [platform]
+        ## Example task_exec_iam_policy
+        # task_exec_iam_policy:
+        #   - policy_id: "EcsServiceEchoServer"
+        #     statements:
+        #       - sid: "EcsServiceEchoServer"
+        #         effect: "Allow"
+        #         actions:
+        #           - "kms:Decrypt"
+        #         resources:
+        #           - "*"
+        containers:
+          service:
+            name: "echoserver"
+            image: gcr.io/google_containers/echoserver:1.10
+            port_mappings:
+              - containerPort: 8080
+                hostPort: 8080
+                protocol: tcp
+        task:
+          desired_count: 1
+          task_memory: 512
+          task_cpu: 256
 ```
 
 This will launch a `kong` service using an ecr image from `mgmt-automation` account.
@@ -119,41 +161,6 @@ components:
           task_cpu: 256
 ```
 
-This will launch google's `echoserver` using an external image from gcr
-
-NOTE: Usage of `image` instead of `ecr_image`.
-
-```yaml
-# stacks/catalog/ecs-service/echoserver.yaml
-import:
-  - catalog/ecs-service/defaults
-
-components:
-  terraform:
-    ecs/platform/echoserver/service:
-      metadata:
-        component: ecs-service
-        inherits:
-          - ecs-service/defaults
-      vars:
-        enabled: true
-        name: echoserver
-        public_lb_enabled: true
-        cluster_attributes: [platform]
-        containers:
-          service:
-            name: "echoserver"
-            image: gcr.io/google_containers/echoserver:1.10
-            port_mappings:
-              - containerPort: 8080
-                hostPort: 8080
-                protocol: tcp
-        task:
-          desired_count: 1
-          task_memory: 512
-          task_cpu: 256
-```
-
 #### Other Domains
 
 This component supports alternate service names for your ECS Service through a couple of variables:
@@ -181,8 +188,8 @@ This then creates the following listener rules:
 ```text
 HTTP Host Header is
 echo-server.public-platform.use2.dev.plat.service-discovery.com
- OR echo-server.dev-acme.com
- OR echo.acme.com
+OR echo-server.dev-acme.com
+OR echo.acme.com
 ```
 
 It will also create the record in Route53 to point `"echo-server.dev-acme.com"` to the ALB. Thus
@@ -260,7 +267,10 @@ components:
 ```
 
 <!-- prettier-ignore-start -->
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+<!-- prettier-ignore-end -->
+
+
+<!-- markdownlint-disable -->
 ## Requirements
 
 | Name | Version |
@@ -484,12 +494,17 @@ components:
 | <a name="output_task_template"></a> [task\_template](#output\_task\_template) | The task template rendered |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | Selected VPC ID |
 | <a name="output_vpc_sg_id"></a> [vpc\_sg\_id](#output\_vpc\_sg\_id) | Selected VPC SG ID |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-<!-- prettier-ignore-end -->
+<!-- markdownlint-restore -->
+
+
 
 ## References
 
-- [cloudposse/terraform-aws-components](https://github.com/cloudposse/terraform-aws-components/tree/main/modules/ecs-service) -
-  Cloud Posse's upstream component
+
+- [cloudposse-terraform-components](https://github.com/orgs/cloudposse-terraform-components/repositories) - Cloud Posse's upstream component
+
+
+
 
 [<img src="https://cloudposse.com/logo-300x69.svg" height="32" align="right"/>](https://cpco.io/homepage?utm_source=github&utm_medium=readme&utm_campaign=cloudposse-terraform-components/aws-ecs-service&utm_content=)
+
