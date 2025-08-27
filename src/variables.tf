@@ -658,6 +658,12 @@ variable "exec_enabled" {
   default     = false
 }
 
+variable "enable_all_egress_rule" {
+  type        = bool
+  description = "A flag to enable/disable adding the all ports egress rule to the service security group"
+  default     = true
+}
+
 variable "service_connect_configurations" {
   type = list(object({
     enabled   = bool
