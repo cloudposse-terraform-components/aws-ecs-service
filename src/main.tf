@@ -303,6 +303,7 @@ module "ecs_alb_service_task" {
   container_port         = local.container_port
   alb_security_group     = local.lb_sg_id
   security_group_ids     = compact(concat([local.vpc_sg_id, local.rds_sg_id], local.external_security_group))
+  enable_all_egress_rule = var.enable_all_egress_rule
 
   nlb_cidr_blocks     = local.is_nlb ? [module.vpc.outputs.vpc_cidr] : []
   nlb_container_port  = local.is_nlb ? local.container_port : 80
