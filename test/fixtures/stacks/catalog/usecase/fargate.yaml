@@ -1,0 +1,30 @@
+components:
+  terraform:
+    ecs-service/serverless:
+      metadata:
+        component: ecs-service
+      vars:
+        enabled: true
+        name: app-svless
+        cluster_attributes: [platform]
+        use_lb: false
+        containers:
+          service:
+            name: app
+            image: public.ecr.aws/amazonlinux/amazonlinux:2023
+            command: ["sh", "-c", "python3 -m http.server 8080"]
+            port_mappings:
+              - containerPort: 8080
+                hostPort: 8080
+                protocol: tcp
+        task:
+          desired_count: 1
+          launch_type: FARGATE
+          network_mode: awsvpc
+        custom_security_group_rules:
+          - type: ingress
+            protocol: tcp
+            from_port: 8080
+            to_port: 8080
+            cidr_blocks: ["0.0.0.0/0"]
+            description: Allow HTTP from anywhere

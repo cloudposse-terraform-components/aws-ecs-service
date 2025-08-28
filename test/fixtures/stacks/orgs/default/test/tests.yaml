@@ -3,6 +3,4 @@ import:
   - catalog/dns-primary
   - catalog/dns-delegated
   - catalog/vpc
-  - catalog/usecase/basic
-  - catalog/usecase/serverless
-  - catalog/usecase/disabled
+  - catalog/usecase/*
