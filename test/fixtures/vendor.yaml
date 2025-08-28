@@ -54,7 +54,7 @@ spec:
       excluded_paths: []
 
     - component: "ecs-cluster"
-      source: github.com/cloudposse-terraform-components/aws-ecs-cluster.git//src?ref={{.Version}}
+      source: github.com/cloudposse-terraform-components/aws-ecs.git//src?ref={{.Version}}
       version: v1.536.0
       targets:
         - "components/terraform/ecs-cluster"
