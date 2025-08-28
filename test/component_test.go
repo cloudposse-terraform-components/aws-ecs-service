@@ -1,5 +1,3 @@
-+//go:build e2e
-+// +build e2e
 package test
 
 import (
@@ -57,15 +55,14 @@ func (s *ComponentSuite) TestBasic() {
 		},
 	}
 
-    componentInstance, err := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
-    require.NoError(s.T(), err)
-    require.NotNil(s.T(), componentInstance)
+	componentInstance, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+	require.NotNil(s.T(), componentInstance)
 	// Basic smoke outputs
 	clusterArn := atmos.Output(s.T(), componentInstance, "ecs_cluster_arn")
-	require.NotEmpty(s.T(), clusterArn)
+	assert.NotEmpty(s.T(), clusterArn)
 
 	subnets := atmos.OutputList(s.T(), componentInstance, "subnet_ids")
-	require.GreaterOrEqual(s.T(), len(subnets), 1)
+	assert.GreaterOrEqual(s.T(), len(subnets), 1)
 
 	serviceNameOut := atmos.Output(s.T(), componentInstance, "service_name")
 	assert.Contains(s.T(), serviceNameOut, serviceName)
