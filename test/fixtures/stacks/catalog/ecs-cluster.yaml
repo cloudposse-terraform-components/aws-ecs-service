@@ -1,0 +1,15 @@
+components:
+  terraform:
+    ecs-cluster:
+      metadata:
+        component: ecs-cluster
+      vars:
+        enabled: true
+        name: cluster
+        cluster_attributes: [platform]
+        container_insights_enabled: false
+        fargate_capacity_providers:
+          - FARGATE
+        fargate_capacity_provider_default_capacity_provider_strategy:
+          - capacity_provider: FARGATE
+            weight: 1
