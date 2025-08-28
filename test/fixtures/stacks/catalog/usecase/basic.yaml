@@ -13,18 +13,30 @@ components:
           service:
             name: app
             image: nginx:stable
+            memory: 512
+            cpu: 256
             port_mappings:
               - containerPort: 80
                 hostPort: 80
                 protocol: tcp
         task:
+          assign_public_ip: false
+          circuit_breaker_deployment_enabled: true
+          circuit_breaker_rollback_enabled: true
+          deployment_controller_type: ECS
           desired_count: 1
+          ignore_changes_desired_count: true
+          ignore_changes_task_definition: false
           launch_type: FARGATE
           network_mode: awsvpc
+          propagate_tags: SERVICE
+          task_cpu: 1024
+          task_memory: 2048
+          wait_for_steady_state: true
         custom_security_group_rules:
           - type: ingress
             protocol: tcp
             from_port: 80
             to_port: 80
-            cidr_blocks: ["0.0.0.0/0"]
-            description: Allow HTTP from anywhere
+            cidr_blocks: ["172.16.0.0/16"]
+            description: Allow HTTP from VPC
