@@ -1,7 +1,0 @@
-configfilepath: test_suite.yaml
-fixturesdir: fixtures
-onlydeploydependencies: false
-randomidentifier: jzhuvl
-srcdir: ../src
-statedir: /var/folders/6g/97f866551yjgktd3rmnqwq7r0000gn/T/atmos-test-helper2724660871/state
-tempdir: /var/folders/6g/97f866551yjgktd3rmnqwq7r0000gn/T/atmos-test-helper2724660871
