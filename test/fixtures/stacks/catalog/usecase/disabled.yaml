@@ -2,7 +2,7 @@ components:
   terraform:
     ecs-service/disabled:
       metadata:
-        component: ecs-service
+        component: target
       vars:
         enabled: false
         name: app

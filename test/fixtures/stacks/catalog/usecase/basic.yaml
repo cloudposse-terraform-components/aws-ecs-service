@@ -2,7 +2,7 @@ components:
   terraform:
     ecs-service/basic:
       metadata:
-        component: ecs-service
+        component: target
       vars:
         enabled: true
         name: app
