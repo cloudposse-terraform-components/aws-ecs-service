@@ -6,7 +6,6 @@ components:
       vars:
         enabled: true
         ecs_cluster_name: ecs-cluster
-        name: app
         cluster_attributes: [platform]
         use_lb: false
         containers:

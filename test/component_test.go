@@ -1,6 +1,7 @@
 package test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -18,14 +19,13 @@ type ComponentSuite struct {
 func (s *ComponentSuite) TestBasic() {
 	const component = "ecs-service/basic"
 	const stack = "default-test"
+	const expectedServiceName = "eg-default-ue2-test-app"
 
-	serviceName := strings.ToLower(random.UniqueId())
-
-	defer s.DestroyAtmosComponent(s.T(), component, stack, nil)
-
+	rand := strings.ToLower(random.UniqueId())
 	inputs := map[string]interface{}{
-		"attributes": []string{serviceName},
+		"name": fmt.Sprintf("%s-%s", "app", rand),
 	}
+	defer s.DestroyAtmosComponent(s.T(), component, stack, &inputs)
 
 	componentInstance, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
 	require.NotNil(s.T(), componentInstance)
@@ -37,7 +37,8 @@ func (s *ComponentSuite) TestBasic() {
 	assert.GreaterOrEqual(s.T(), len(subnets), 1)
 
 	serviceNameOut := atmos.Output(s.T(), componentInstance, "service_name")
-	assert.Contains(s.T(), serviceNameOut, serviceName)
+	assert.Contains(s.T(), serviceNameOut, expectedServiceName)
+
 	// Drift test ensures idempotency
 	s.DriftTest(component, stack, &inputs)
 }
