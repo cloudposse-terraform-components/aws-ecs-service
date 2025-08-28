@@ -97,7 +97,8 @@ func TestRunSuite(t *testing.T) {
 
 	// ECS cluster dependency
 	ecsInputs := map[string]interface{}{
-		"name": "cluster",
+		"name":                   "cluster",
+		"acm_certificate_domain": subdomain + "components.cptest.test-automation.app",
 	}
 	suite.AddDependency(t, "ecs-cluster", "default-test", &ecsInputs)
 
