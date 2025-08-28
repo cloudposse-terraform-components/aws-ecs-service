@@ -710,12 +710,13 @@ variable "service_registries" {
 
 variable "custom_security_group_rules" {
   type = list(object({
-    type        = string
-    from_port   = number
-    to_port     = number
-    protocol    = string
-    cidr_blocks = list(string)
-    description = optional(string)
+    type                     = string
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    cidr_blocks              = optional(list(string))
+    description              = optional(string)
+    source_security_group_id = optional(string)
   }))
   description = "The list of custom security group rules to add to the service security group"
   default     = []

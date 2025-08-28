@@ -362,27 +362,10 @@ module "ecs_alb_service_task" {
   context = module.this.context
 }
 
-resource "aws_security_group_rule" "custom_sg_rules_cidr" {
-  for_each = local.enabled ? {
-    for i, sg_rule in var.custom_security_group_rules :
-    format("%03d_%s_%s_%s_%s", i, sg_rule.type, sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
-    if try(length(sg_rule.cidr_blocks), 0) > 0
-  } : {}
-
-  description       = each.value.description
-  type              = each.value.type
-  from_port         = each.value.from_port
-  to_port           = each.value.to_port
-  protocol          = each.value.protocol
-  cidr_blocks       = each.value.cidr_blocks
-  security_group_id = one(module.ecs_alb_service_task[*].service_security_group_id)
-}
-
-resource "aws_security_group_rule" "custom_sg_rules_sg" {
-  for_each = local.enabled ? {
-    for i, sg_rule in var.custom_security_group_rules :
-    format("%03d_%s_%s_%s_%s", i, sg_rule.type, sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
-    if try(sg_rule.source_security_group_id, null) != null
+resource "aws_security_group_rule" "custom_sg_rules" {
+  for_each = local.enabled && length(var.custom_security_group_rules) > 0 ? {
+    for sg_rule in var.custom_security_group_rules :
+    format("%s_%s_%s", sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
   } : {}
 
   description              = each.value.description
@@ -390,6 +373,7 @@ resource "aws_security_group_rule" "custom_sg_rules_sg" {
   from_port                = each.value.from_port
   to_port                  = each.value.to_port
   protocol                 = each.value.protocol
+  cidr_blocks              = each.value.cidr_blocks
   source_security_group_id = each.value.source_security_group_id
   security_group_id        = one(module.ecs_alb_service_task[*].service_security_group_id)
 }
