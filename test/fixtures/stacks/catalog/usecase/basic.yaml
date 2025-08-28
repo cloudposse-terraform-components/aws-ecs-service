@@ -1,45 +1,29 @@
 components:
   terraform:
-    aurora-postgres/basic:
+    ecs-service/basic:
       metadata:
-        component: target
+        component: ecs-service
       vars:
         enabled: true
-        name: db
-        tags:
-          Team: sre
-          Service: aurora-postgres
-        cluster_name: basic
-        deletion_protection: false
-        storage_encrypted: true
-        engine: aurora-postgresql
-        publicly_accessible: true
-
-        dns_gbl_delegated_environment_name: "ue2"
-
-        # Provisioned configuration
-        engine_mode: provisioned
-        engine_version: "15.3"
-        cluster_family: aurora-postgresql15
-        # 1 writer, 1 reader
-        cluster_size: 2
-        # https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.DBInstanceClass.html
-        instance_type: db.t3.medium
-
-        admin_user: postgres
-        admin_password: "" # generate random password
-        database_name: postgres
-        database_port: 5432
-        skip_final_snapshot: true
-        # Enhanced Monitoring
-        # A boolean flag to enable/disable the creation of the enhanced monitoring IAM role.
-        # If set to false, the module will not create a new role and will use rds_monitoring_role_arn for enhanced monitoring
-        enhanced_monitoring_role_enabled: true
-        # The interval, in seconds, between points when enhanced monitoring metrics are collected for the DB instance.
-        # To disable collecting Enhanced Monitoring metrics, specify 0. The default is 0. Valid Values: 0, 1, 5, 10, 15, 30, 60
-        rds_monitoring_interval: 15
-        # Allow ingress from the following accounts
-        # If any of tenant, stage, or environment aren't given, this will be taken
-        allow_ingress_from_vpc_accounts: []
-          # - tenant: core
-          #   stage: auto
+        name: app
+        cluster_attributes: [platform]
+        use_lb: false
+        containers:
+          service:
+            name: app
+            image: nginx:stable
+            port_mappings:
+              - containerPort: 80
+                hostPort: 80
+                protocol: tcp
+        task:
+          desired_count: 1
+          launch_type: FARGATE
+          network_mode: awsvpc
+        custom_security_group_rules:
+          - type: ingress
+            protocol: tcp
+            from_port: 80
+            to_port: 80
+            cidr_blocks: ["0.0.0.0/0"]
+            description: Allow HTTP from anywhere
