@@ -1,0 +1,9 @@
+components:
+  terraform:
+    ecs-service/disabled:
+      metadata:
+        component: target
+      vars:
+        enabled: false
+        ecs_cluster_name: ecs-cluster
+        name: app
