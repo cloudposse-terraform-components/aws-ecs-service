@@ -63,4 +63,5 @@ spec:
         - "**/*.md"
         - "**/*.tftmpl"
         - "**/modules/**"
+        - "**"
       excluded_paths: []
