@@ -20,7 +20,8 @@ components:
                 hostPort: 80
                 protocol: tcp
         task:
-          assign_public_ip: false
+          # this places the task in the public subnet
+          assign_public_ip: true # required for pulling public image since this is fargate
           circuit_breaker_deployment_enabled: true
           circuit_breaker_rollback_enabled: true
           deployment_controller_type: ECS
