@@ -1,5 +1,5 @@
 state/
 .cache
-test/test-suite.json
+test-suite.json
 .atmos
 test_suite.yaml

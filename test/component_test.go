@@ -1,3 +1,5 @@
++//go:build e2e
++// +build e2e
 package test
 
 import (
@@ -8,6 +10,7 @@ import (
 	helper "github.com/cloudposse/test-helpers/pkg/atmos/component-helper"
 	"github.com/gruntwork-io/terratest/modules/random"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 type ComponentSuite struct {
@@ -54,19 +57,18 @@ func (s *ComponentSuite) TestBasic() {
 		},
 	}
 
-	componentInstance, _ := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
-	assert.NotNil(s.T(), componentInstance)
-
+    componentInstance, err := s.DeployAtmosComponent(s.T(), component, stack, &inputs)
+    require.NoError(s.T(), err)
+    require.NotNil(s.T(), componentInstance)
 	// Basic smoke outputs
 	clusterArn := atmos.Output(s.T(), componentInstance, "ecs_cluster_arn")
-	assert.NotEmpty(s.T(), clusterArn)
+	require.NotEmpty(s.T(), clusterArn)
 
 	subnets := atmos.OutputList(s.T(), componentInstance, "subnet_ids")
-	assert.GreaterOrEqual(s.T(), len(subnets), 1)
+	require.GreaterOrEqual(s.T(), len(subnets), 1)
 
 	serviceNameOut := atmos.Output(s.T(), componentInstance, "service_name")
 	assert.Contains(s.T(), serviceNameOut, serviceName)
-
 	// Drift test ensures idempotency
 	s.DriftTest(component, stack, &inputs)
 }
