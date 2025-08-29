@@ -367,13 +367,15 @@ resource "aws_security_group_rule" "custom_sg_rules" {
     for sg_rule in var.custom_security_group_rules :
     format("%s_%s_%s", sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
   } : {}
-  description       = each.value.description
-  type              = each.value.type
-  from_port         = each.value.from_port
-  to_port           = each.value.to_port
-  protocol          = each.value.protocol
-  cidr_blocks       = each.value.cidr_blocks
-  security_group_id = one(module.ecs_alb_service_task[*].service_security_group_id)
+
+  description              = each.value.description
+  type                     = each.value.type
+  from_port                = each.value.from_port
+  to_port                  = each.value.to_port
+  protocol                 = each.value.protocol
+  cidr_blocks              = each.value.cidr_blocks
+  source_security_group_id = each.value.source_security_group_id
+  security_group_id        = one(module.ecs_alb_service_task[*].service_security_group_id)
 }
 
 module "alb_ingress" {
