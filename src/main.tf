@@ -314,7 +314,7 @@ module "ecs_alb_service_task" {
     {
       container_name   = try(local.service_container["name"], null),
       container_port   = local.container_port,
-      target_group_arn = local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb.default_target_group_arn
+      target_group_arn = local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb.nlb.default_target_group_arn
       # not required since elb is unused but must be set to null
       elb_name = null
     },
