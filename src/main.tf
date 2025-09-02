@@ -368,13 +368,13 @@ resource "aws_security_group_rule" "custom_sg_rules" {
     format("%s_%s_%s", sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
   } : {}
 
-  description              = each.value.description
+  description              = try(each.value.description, null)
   type                     = each.value.type
   from_port                = each.value.from_port
   to_port                  = each.value.to_port
   protocol                 = each.value.protocol
-  cidr_blocks              = each.value.cidr_blocks
-  source_security_group_id = each.value.source_security_group_id
+  cidr_blocks              = try(each.value.cidr_blocks, null)
+  source_security_group_id = try(each.value.source_security_group_id, null)
   security_group_id        = one(module.ecs_alb_service_task[*].service_security_group_id)
 }
 
