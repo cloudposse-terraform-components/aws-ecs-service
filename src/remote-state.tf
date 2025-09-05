@@ -13,19 +13,30 @@ locals {
   is_nlb = local.use_lb && try(length(var.nlb_name) > 0, false)
   nlb    = try(module.nlb[0].outputs, null)
 
+  # Backward compatibility for nlb outputs - support both old format (local.nlb.property) and new format (local.nlb.nlb.property)
+  nlb_compat = local.nlb != null ? {
+    nlb_arn                = try(local.nlb.nlb.nlb_arn, local.nlb.nlb_arn, null)
+    nlb_name               = try(local.nlb.nlb.nlb_name, local.nlb.nlb_name, null)
+    nlb_zone_id            = try(local.nlb.nlb.nlb_zone_id, local.nlb.nlb_zone_id, null)
+    default_listener_arn   = try(local.nlb.nlb.default_listener_arn, local.nlb.default_listener_arn, null)
+    default_target_group_arn = try(local.nlb.nlb.default_target_group_arn, local.nlb.default_target_group_arn, null)
+    is_443_enabled         = try(local.nlb.nlb.is_443_enabled, local.nlb.is_443_enabled, false)
+    route53_record         = try(local.nlb.nlb.route53_record, local.nlb.route53_record, {})
+  } : null
+
   use_lb = local.enabled && var.use_lb
 
   requested_protocol = local.use_lb && !local.lb_listener_http_is_redirect ? var.http_protocol : null
-  lb_protocol        = local.lb_listener_http_is_redirect || try(local.is_nlb && local.nlb.nlb.is_443_enabled, false) ? "https" : "http"
+  lb_protocol        = local.lb_listener_http_is_redirect || try(local.is_nlb && local.nlb_compat.is_443_enabled, false) ? "https" : "http"
   http_protocol      = coalesce(local.requested_protocol, local.lb_protocol)
 
-  lb_arn                       = try(coalesce(local.nlb.nlb.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
-  lb_name                      = try(coalesce(local.nlb.nlb.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
+  lb_arn                       = try(coalesce(local.nlb_compat.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
+  lb_name                      = try(coalesce(local.nlb_compat.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
   lb_listener_http_is_redirect = try(length(local.is_nlb ? "" : local.alb.http_redirect_listener_arn) > 0, false)
-  lb_listener_https_arn        = try(coalesce(local.nlb.nlb.default_listener_arn, ""), coalesce(local.alb.https_listener_arn, ""), null)
+  lb_listener_https_arn        = try(coalesce(local.nlb_compat.default_listener_arn, ""), coalesce(local.alb.https_listener_arn, ""), null)
   lb_sg_id                     = try(local.is_nlb ? null : local.alb.security_group_id, null)
-  lb_zone_id                   = try(coalesce(local.nlb.nlb.nlb_zone_id, ""), coalesce(local.alb.alb_zone_id, ""), null)
-  lb_fqdn                      = try(coalesce(local.nlb.nlb.route53_record.fqdn, ""), coalesce(local.alb.route53_record.fqdn, ""), local.full_domain)
+  lb_zone_id                   = try(coalesce(local.nlb_compat.nlb_zone_id, ""), coalesce(local.alb.alb_zone_id, ""), null)
+  lb_fqdn                      = try(coalesce(local.nlb_compat.route53_record.fqdn, ""), coalesce(local.alb.route53_record.fqdn, ""), local.full_domain)
 
 }
 
