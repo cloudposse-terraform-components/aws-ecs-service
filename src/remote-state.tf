@@ -15,14 +15,14 @@ locals {
 
   # Backward compatibility for nlb outputs - support both old format (local.nlb.property) and new format (local.nlb.nlb.property)
   nlb_compat = local.nlb != null ? {
-    nlb_arn                = try(local.nlb.nlb.nlb_arn, local.nlb.nlb_arn, null)
-    nlb_name               = try(local.nlb.nlb.nlb_name, local.nlb.nlb_name, null)
-    nlb_dns_name           = try(local.nlb.nlb.nlb_dns_name, local.nlb.nlb_dns_name, null)
-    nlb_zone_id            = try(local.nlb.nlb.nlb_zone_id, local.nlb.nlb_zone_id, null)
-    default_listener_arn   = try(local.nlb.nlb.default_listener_arn, local.nlb.default_listener_arn, null)
+    nlb_arn                  = try(local.nlb.nlb.nlb_arn, local.nlb.nlb_arn, null)
+    nlb_name                 = try(local.nlb.nlb.nlb_name, local.nlb.nlb_name, null)
+    nlb_dns_name             = try(local.nlb.nlb.nlb_dns_name, local.nlb.nlb_dns_name, null)
+    nlb_zone_id              = try(local.nlb.nlb.nlb_zone_id, local.nlb.nlb_zone_id, null)
+    default_listener_arn     = try(local.nlb.nlb.default_listener_arn, local.nlb.default_listener_arn, null)
     default_target_group_arn = try(local.nlb.nlb.default_target_group_arn, local.nlb.default_target_group_arn, null)
-    is_443_enabled         = try(local.nlb.nlb.is_443_enabled, local.nlb.is_443_enabled, false)
-    route53_record         = try(local.nlb.nlb.route53_record, local.nlb.route53_record, {})
+    is_443_enabled           = try(local.nlb.nlb.is_443_enabled, local.nlb.is_443_enabled, false)
+    route53_record           = try(local.nlb.nlb.route53_record, local.nlb.route53_record, {})
   } : null
 
   use_lb = local.enabled && var.use_lb
@@ -34,19 +34,19 @@ locals {
   lb_arn                       = try(coalesce(local.nlb_compat.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
   lb_name                      = try(coalesce(local.nlb_compat.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
   lb_listener_http_is_redirect = try(length(local.is_nlb ? "" : local.alb.http_redirect_listener_arn) > 0, false)
-  lb_listener_https_arn       = coalesce(try(local.nlb_compat.default_listener_arn, null), try(local.alb.https_listener_arn, null), null)
+  lb_listener_https_arn        = coalesce(try(local.nlb_compat.default_listener_arn, null), try(local.alb.https_listener_arn, null), null)
   lb_sg_id                     = try(local.is_nlb ? null : local.alb.security_group_id, null)
   # Replace the try+coalesce("") pattern (which can return "") with
   # coalesce over try(..., null) to properly fall through to the next non-null value
   lb_zone_id = coalesce(
     try(local.nlb_compat.nlb_zone_id, null),
-    try(local.alb.alb_zone_id,      null),
+    try(local.alb.alb_zone_id, null),
     null,
   )
 
-  lb_fqdn    = coalesce(
+  lb_fqdn = coalesce(
     try(local.nlb_compat.route53_record.fqdn, null),
-    try(local.alb.route53_record.fqdn,      null),
+    try(local.alb.route53_record.fqdn, null),
     local.full_domain,
   )
 
