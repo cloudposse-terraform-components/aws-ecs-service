@@ -41,8 +41,9 @@ locals {
   lb_zone_id = coalesce(
     try(local.nlb_compat.nlb_zone_id, null),
     try(local.alb.alb_zone_id, null),
-    null,
+    "",
   )
+  lb_zone_id = local.lb_zone_id == "" ? null : local.lb_zone_id
 
   lb_fqdn = coalesce(
     try(local.nlb_compat.route53_record.fqdn, null),

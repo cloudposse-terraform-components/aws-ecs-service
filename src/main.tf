@@ -472,7 +472,7 @@ module "vanity_alias" {
   source  = "cloudposse/route53-alias/aws"
   version = "0.13.0"
 
-  count = local.enabled ? 1 : 0
+  count = local.enabled && local.lb_zone_id != null ? 1 : 0
 
   aliases         = var.vanity_alias
   parent_zone_id  = local.vanity_domain_zone_id
