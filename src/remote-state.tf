@@ -13,17 +13,8 @@ locals {
   is_nlb = local.use_lb && try(length(var.nlb_name) > 0, false)
   nlb    = try(module.nlb[0].outputs, null)
 
-  # Backward compatibility for nlb outputs - support both old format (local.nlb.property) and new format (local.nlb.nlb.property)
-  nlb_compat = local.nlb != null ? {
-    nlb_arn                  = try(local.nlb.nlb.nlb_arn, local.nlb.nlb_arn, null)
-    nlb_name                 = try(local.nlb.nlb.nlb_name, local.nlb.nlb_name, null)
-    nlb_dns_name             = try(local.nlb.nlb.nlb_dns_name, local.nlb.nlb_dns_name, null)
-    nlb_zone_id              = try(local.nlb.nlb.nlb_zone_id, local.nlb.nlb_zone_id, null)
-    default_listener_arn     = try(local.nlb.nlb.default_listener_arn, local.nlb.default_listener_arn, null)
-    default_target_group_arn = try(local.nlb.nlb.default_target_group_arn, local.nlb.default_target_group_arn, null)
-    is_443_enabled           = try(local.nlb.nlb.is_443_enabled, local.nlb.is_443_enabled, false)
-    route53_record           = try(local.nlb.nlb.route53_record, local.nlb.route53_record, {})
-  } : null
+  # Backward compatibility for NLB outputs — prefer new nested form (`local.nlb.nlb`) with fallback to old flat form (`local.nlb`).
+  nlb_compat = try(local.nlb.nlb, local.nlb)
 
   use_lb = local.enabled && var.use_lb
 
