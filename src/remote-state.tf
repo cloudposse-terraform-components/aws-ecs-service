@@ -13,19 +13,32 @@ locals {
   is_nlb = local.use_lb && try(length(var.nlb_name) > 0, false)
   nlb    = try(module.nlb[0].outputs, null)
 
+  # Backward compatibility for NLB outputs — prefer new nested form (`local.nlb.nlb`) with fallback to old flat form (`local.nlb`).
+  nlb_compat = try(local.nlb.nlb, local.nlb)
+
   use_lb = local.enabled && var.use_lb
 
   requested_protocol = local.use_lb && !local.lb_listener_http_is_redirect ? var.http_protocol : null
-  lb_protocol        = local.lb_listener_http_is_redirect || try(local.is_nlb && local.nlb.is_443_enabled, false) ? "https" : "http"
+  lb_protocol        = local.lb_listener_http_is_redirect || try(local.is_nlb && local.nlb_compat.is_443_enabled, false) ? "https" : "http"
   http_protocol      = coalesce(local.requested_protocol, local.lb_protocol)
 
-  lb_arn                       = try(coalesce(local.nlb.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
-  lb_name                      = try(coalesce(local.nlb.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
+  lb_arn                       = try(coalesce(local.nlb_compat.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
+  lb_name                      = try(coalesce(local.nlb_compat.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
   lb_listener_http_is_redirect = try(length(local.is_nlb ? "" : local.alb.http_redirect_listener_arn) > 0, false)
-  lb_listener_https_arn        = try(coalesce(local.nlb.default_listener_arn, ""), coalesce(local.alb.https_listener_arn, ""), null)
+  lb_listener_https_arn        = try(coalesce(try(local.nlb_compat.default_listener_arn, null), try(local.alb.https_listener_arn, null)), null)
   lb_sg_id                     = try(local.is_nlb ? null : local.alb.security_group_id, null)
-  lb_zone_id                   = try(coalesce(local.nlb.nlb_zone_id, ""), coalesce(local.alb.alb_zone_id, ""), null)
-  lb_fqdn                      = try(coalesce(local.nlb.route53_record.fqdn, ""), coalesce(local.alb.route53_record.fqdn, ""), local.full_domain)
+  # Replace the try+coalesce("") pattern (which can return "") with
+  # coalesce over try(..., null) to properly fall through to the next non-null value
+  lb_zone_id = try(coalesce(
+    try(local.nlb_compat.nlb_zone_id, null),
+    try(local.alb.alb_zone_id, null),
+  ), null)
+
+  lb_fqdn = coalesce(
+    try(local.nlb_compat.route53_record.fqdn, null),
+    try(local.alb.route53_record.fqdn, null),
+    local.full_domain,
+  )
 
 }
 
