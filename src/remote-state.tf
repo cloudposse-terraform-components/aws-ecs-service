@@ -34,16 +34,14 @@ locals {
   lb_arn                       = try(coalesce(local.nlb_compat.nlb_arn, ""), coalesce(local.alb.alb_arn, ""), null)
   lb_name                      = try(coalesce(local.nlb_compat.nlb_name, ""), coalesce(local.alb.alb_dns_name, ""), null)
   lb_listener_http_is_redirect = try(length(local.is_nlb ? "" : local.alb.http_redirect_listener_arn) > 0, false)
-  lb_listener_https_arn        = coalesce(try(local.nlb_compat.default_listener_arn, null), try(local.alb.https_listener_arn, null), null)
+  lb_listener_https_arn        = try(coalesce(try(local.nlb_compat.default_listener_arn, null), try(local.alb.https_listener_arn, null)), null)
   lb_sg_id                     = try(local.is_nlb ? null : local.alb.security_group_id, null)
   # Replace the try+coalesce("") pattern (which can return "") with
   # coalesce over try(..., null) to properly fall through to the next non-null value
-  lb_zone_id = coalesce(
+  lb_zone_id = try(coalesce(
     try(local.nlb_compat.nlb_zone_id, null),
     try(local.alb.alb_zone_id, null),
-    "",
-  )
-  lb_zone_id_or_null = local.lb_zone_id == "" ? null : local.lb_zone_id
+  ), null)
 
   lb_fqdn = coalesce(
     try(local.nlb_compat.route53_record.fqdn, null),

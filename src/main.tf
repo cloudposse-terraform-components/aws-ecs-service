@@ -385,7 +385,7 @@ module "alb_ingress" {
   count = local.is_alb ? 1 : 0
 
   vpc_id                        = local.vpc_id
-  unauthenticated_listener_arns = [local.lb_listener_https_arn]
+  unauthenticated_listener_arns = compact([local.lb_listener_https_arn])
   unauthenticated_hosts = var.lb_catch_all ? [format("*.%s", var.vanity_domain), local.full_domain] : concat([
     local.full_domain
   ], var.vanity_alias, var.additional_targets)
@@ -472,12 +472,12 @@ module "vanity_alias" {
   source  = "cloudposse/route53-alias/aws"
   version = "0.13.0"
 
-  count = local.enabled && local.lb_zone_id_or_null != null ? 1 : 0
+  count = local.enabled && local.lb_zone_id != null ? 1 : 0
 
   aliases         = var.vanity_alias
   parent_zone_id  = local.vanity_domain_zone_id
   target_dns_name = local.lb_name
-  target_zone_id  = local.lb_zone_id_or_null
+  target_zone_id  = local.lb_zone_id
 
   context = module.this.context
 }
