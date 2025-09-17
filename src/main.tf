@@ -375,6 +375,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
   protocol                 = each.value.protocol
   cidr_blocks              = try(each.value.cidr_blocks, null)
   source_security_group_id = try(each.value.source_security_group_id, null)
+  prefix_list_ids          = try(each.value.prefix_list_ids, null)
   security_group_id        = one(module.ecs_alb_service_task[*].service_security_group_id)
 }
 
