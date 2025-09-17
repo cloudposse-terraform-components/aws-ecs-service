@@ -717,6 +717,7 @@ variable "custom_security_group_rules" {
     cidr_blocks              = optional(list(string))
     description              = optional(string)
     source_security_group_id = optional(string)
+    prefix_list_ids          = optional(list(string))
   }))
   description = "The list of custom security group rules to add to the service security group"
   default     = []
