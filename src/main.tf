@@ -365,7 +365,7 @@ module "ecs_alb_service_task" {
 resource "aws_security_group_rule" "custom_sg_rules" {
   for_each = local.enabled && length(var.custom_security_group_rules) > 0 ? {
     for sg_rule in var.custom_security_group_rules :
-    format("%s_%s_%s", sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
+    format("%s_%s_%s_%s", sg_rule.type, sg_rule.protocol, sg_rule.from_port, sg_rule.to_port) => sg_rule
   } : {}
 
   description              = try(each.value.description, null)
