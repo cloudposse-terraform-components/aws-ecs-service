@@ -115,10 +115,14 @@ locals {
     name => { for key, value in zipmap(result.names, result.values) : element(reverse(split("/", key)), 0) => value }
   }
 
-  container_aliases = {
+  container_aliases_pre_dd = {
     for name, settings in var.containers :
     settings["name"] => name if local.enabled
   }
+
+  container_aliases = merge(local.container_aliases_pre_dd,
+    { for container in ["datadog-agent", "datadog-log-router"] : container => container if local.enabled && var.datadog_agent_sidecar_enabled }
+  )
 
   container_s3 = {
     for item in lookup(local.task_definition_s3, "containerDefinitions", []) :
