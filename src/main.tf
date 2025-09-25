@@ -95,14 +95,13 @@ data "aws_ecs_task_definition" "latest" {
 }
 
 locals {
-  latest_task_definition = local.s3_mirroring_enabled && local.follow_latest_task_definition
-    ? format(
-        "%s:%s",
-        one(data.aws_ecs_task_definition.latest[*].family),
-        one(data.aws_ecs_task_definition.latest[*].revision)
-      )
-    : null
+  latest_task_definition = local.s3_mirroring_enabled && local.follow_latest_task_definition ? format(
+    "%s:%s",
+    one(data.aws_ecs_task_definition.latest[*].family),
+    one(data.aws_ecs_task_definition.latest[*].revision)
+  ) : null
 }
+
 module "logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
   version = "0.6.9"

@@ -108,13 +108,14 @@ data "aws_iam_policy_document" "github_actions_iam_ecspresso_policy" {
         local.aws_partition,
         var.region,
         local.account_id,
-        length(join("", module.ecs_alb_service_task[*].task_definition_family)) > 0
-          ? join("", module.ecs_alb_service_task[*].task_definition_family)
-          : (length(data.aws_ecs_task_definition.latest[*].family) > 0
-              ? one(data.aws_ecs_task_definition.latest[*].family)
-              : module.this.id
-            )
+        try(one(module.ecs_alb_service_task[*].task_definition_family), null) != null
+        ? try(one(module.ecs_alb_service_task[*].task_definition_family), null)
+        : (try(one(data.aws_ecs_task_definition.latest[*].family), null) != null
+          ? one(data.aws_ecs_task_definition.latest[*].family)
+          : module.this.id
+        )
       ),
+    ]
   }
 
   statement {
