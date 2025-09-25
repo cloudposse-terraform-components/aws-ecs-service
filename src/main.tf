@@ -69,6 +69,12 @@ locals {
   efs_volumes = concat(try(local.task["efs_volumes"], []), local.efs_component_merged)
 }
 
+locals {
+  # Toggle to follow the latest ACTIVE task definition revision for this family (avoid drift when CI updates it)
+  # Defaults to true when S3 mirroring is enabled, otherwise false unless explicitly set.
+  follow_latest_task_definition = coalesce(var.follow_latest_task_definition, local.s3_mirroring_enabled)
+}
+
 data "aws_s3_objects" "mirror" {
   count  = local.s3_mirroring_enabled ? 1 : 0
   bucket = lookup(module.s3[0].outputs, "bucket_id", null)
@@ -79,6 +85,16 @@ data "aws_s3_object" "task_definition" {
   count  = local.task_definition_use_s3 ? 1 : 0
   bucket = lookup(module.s3[0].outputs, "bucket_id", null)
   key    = try(element(local.task_definition_s3_objects, index(local.task_definition_s3_objects, local.task_definition_s3_key)), null)
+}
+
+# Resolve the latest ACTIVE task definition by family when enabled
+data "aws_ecs_task_definition" "latest" {
+  count = local.s3_mirroring_enabled && local.follow_latest_task_definition ? 1 : 0
+  # Family name matches `module.this.id` used by Cloud Posse modules
+  task_definition = module.this.id
+}
+locals {
+  latest_task_definition = format("%s:%s", one(data.aws_ecs_task_definition.latest[*].family), one(data.aws_ecs_task_definition.latest[*].revision))
 }
 
 module "logs" {
@@ -301,6 +317,9 @@ module "ecs_alb_service_task" {
   subnet_ids      = local.subnet_ids
 
   container_definition_json = jsonencode(local.container_definition)
+
+  # When following latest, point service at the latest ACTIVE task definition ARN
+  task_definition = try([local.latest_task_definition], [])
 
   # This is set to true to allow ingress from the ALB sg
   use_alb_security_group = local.use_alb_security_group
@@ -610,7 +629,7 @@ resource "aws_kinesis_stream" "default" {
 
 data "aws_ecs_task_definition" "created_task" {
   count           = local.s3_mirroring_enabled ? 1 : 0
-  task_definition = module.ecs_alb_service_task[0].task_definition_family
+  task_definition = coalesce(local.latest_task_definition, module.ecs_alb_service_task[0].task_definition_family)
   depends_on = [
     module.ecs_alb_service_task
   ]

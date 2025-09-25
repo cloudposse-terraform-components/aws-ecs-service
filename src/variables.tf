@@ -756,3 +756,9 @@ variable "vpc_component_name" {
   description = "The name of a VPC component"
   default     = "vpc"
 }
+ 
+variable "follow_latest_task_definition" {
+  type        = bool
+  description = "If true (or left null and S3 mirroring is enabled), point the ECS service at the latest ACTIVE task definition of the family to avoid drift when CI updates it. If false, the module will manage the task definition as usual."
+  default     = null
+}

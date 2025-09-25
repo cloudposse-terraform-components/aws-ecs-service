@@ -56,6 +56,11 @@ resource "aws_ssm_parameter" "full_urls" {
   overwrite   = true
 
   tags = module.this.tags
+
+  # ignore changes to key_id, currently a workaround for terraform pinned version that allows permadrift.
+  lifecycle {
+    ignore_changes = [key_id]
+  }
 }
 
 
