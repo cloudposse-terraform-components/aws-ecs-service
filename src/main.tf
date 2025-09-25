@@ -93,10 +93,16 @@ data "aws_ecs_task_definition" "latest" {
   # Family name matches `module.this.id` used by Cloud Posse modules
   task_definition = module.this.id
 }
-locals {
-  latest_task_definition = format("%s:%s", one(data.aws_ecs_task_definition.latest[*].family), one(data.aws_ecs_task_definition.latest[*].revision))
-}
 
+locals {
+  latest_task_definition = local.s3_mirroring_enabled && local.follow_latest_task_definition
+    ? format(
+        "%s:%s",
+        one(data.aws_ecs_task_definition.latest[*].family),
+        one(data.aws_ecs_task_definition.latest[*].revision)
+      )
+    : null
+}
 module "logs" {
   source  = "cloudposse/cloudwatch-logs/aws"
   version = "0.6.9"
@@ -319,8 +325,7 @@ module "ecs_alb_service_task" {
   container_definition_json = jsonencode(local.container_definition)
 
   # When following latest, point service at the latest ACTIVE task definition ARN
-  task_definition = try([local.latest_task_definition], [])
-
+  task_definition = local.follow_latest_task_definition ? compact([local.latest_task_definition]) : []
   # This is set to true to allow ingress from the ALB sg
   use_alb_security_group = local.use_alb_security_group
   container_port         = local.container_port

@@ -103,8 +103,18 @@ data "aws_iam_policy_document" "github_actions_iam_ecspresso_policy" {
       "ecs:RunTask",
     ]
     resources = [
-      format("arn:%s:ecs:%s:%s:task-definition/%s:*", local.aws_partition, var.region, local.account_id, try(join("", module.ecs_alb_service_task[*].task_definition_family), one(data.aws_ecs_task_definition.latest[*].family))),
-    ]
+      format(
+        "arn:%s:ecs:%s:%s:task-definition/%s:*",
+        local.aws_partition,
+        var.region,
+        local.account_id,
+        length(join("", module.ecs_alb_service_task[*].task_definition_family)) > 0
+          ? join("", module.ecs_alb_service_task[*].task_definition_family)
+          : (length(data.aws_ecs_task_definition.latest[*].family) > 0
+              ? one(data.aws_ecs_task_definition.latest[*].family)
+              : module.this.id
+            )
+      ),
   }
 
   statement {
