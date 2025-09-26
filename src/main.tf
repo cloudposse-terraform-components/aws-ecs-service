@@ -87,18 +87,11 @@ data "aws_s3_object" "task_definition" {
   key    = try(element(local.task_definition_s3_objects, index(local.task_definition_s3_objects, local.task_definition_s3_key)), null)
 }
 
-# Resolve the latest ACTIVE task definition by family when enabled
-data "aws_ecs_task_definition" "latest" {
-  count = local.s3_mirroring_enabled && local.follow_latest_task_definition ? 1 : 0
-  # Family name matches `module.this.id` used by Cloud Posse modules
-  task_definition = module.this.id
-}
-
 locals {
   latest_task_definition = local.s3_mirroring_enabled && local.follow_latest_task_definition ? format(
     "%s:%s",
-    one(data.aws_ecs_task_definition.latest[*].family),
-    one(data.aws_ecs_task_definition.latest[*].revision)
+    one(data.aws_ecs_task_definition.created_task[*].family),
+    one(data.aws_ecs_task_definition.created_task[*].revision)
   ) : null
 }
 
