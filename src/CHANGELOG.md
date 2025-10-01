@@ -1,4 +1,4 @@
-## PR [ TODO ]
+## PR [#77](https://github.com/cloudposse-terraform-components/aws-ecs-service/pull/77)
 
 ### Added
 
