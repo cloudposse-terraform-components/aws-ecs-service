@@ -54,11 +54,13 @@ resource "aws_iam_role" "github_actions" {
   count              = local.github_actions_iam_role_enabled ? 1 : 0
   name               = module.gha_role_name.id
   assume_role_policy = module.gha_assume_role.github_assume_role_policy
+}
 
-  inline_policy {
-    name   = module.gha_role_name.id
-    policy = local.github_actions_iam_policy
-  }
+resource "aws_iam_role_policy" "github_actions" {
+  count  = local.github_actions_iam_role_enabled ? 1 : 0
+  name   = module.gha_role_name.id
+  role   = aws_iam_role.github_actions[0].id
+  policy = local.github_actions_iam_policy
 }
 
 output "github_actions_iam_role_arn" {

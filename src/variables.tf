@@ -135,6 +135,9 @@ variable "task" {
     circuit_breaker_deployment_enabled = optional(bool, true)
     circuit_breaker_rollback_enabled   = optional(bool, true)
 
+    ignore_changes_task_definition = optional(bool, true)
+    ignore_changes_desired_count   = optional(bool, false)
+
     ecs_service_enabled = optional(bool, true)
     bind_mount_volumes = optional(list(object({
       name      = string
@@ -718,6 +721,7 @@ variable "custom_security_group_rules" {
     description              = optional(string)
     source_security_group_id = optional(string)
     prefix_list_ids          = optional(list(string))
+    security_group_id        = optional(string)
   }))
   description = "The list of custom security group rules to add to the service security group"
   default     = []
@@ -756,8 +760,26 @@ variable "vpc_component_name" {
   description = "The name of a VPC component"
   default     = "vpc"
 }
-variable "follow_latest_task_definition" {
-  type        = bool
-  description = "If true (or left null and S3 mirroring is enabled), point the ECS service at the latest ACTIVE task definition of the family to avoid drift when CI updates it. If false, the module will manage the task definition as usual."
-  default     = null
+
+variable "additional_security_groups" {
+  type        = list(string)
+  description = "A list of additionial security group IDs to add to the service"
+  default     = []
+}
+
+variable "additional_lb_target_groups" {
+  type = list(object({
+    container_name   = string
+    container_port   = number
+    target_group_arn = optional(string)
+  }))
+  description = <<-EOT
+    Additional load balancer target group configurations for registering multiple container ports.
+    This allows you to register sidecar containers to separate target groups.
+    Each entry requires:
+    - container_name: Name of the container to register
+    - container_port: Port on the container to register
+    - target_group_arn: (Optional) ARN of the target group. If not provided, uses the default ALB/NLB target group
+  EOT
+  default     = []
 }

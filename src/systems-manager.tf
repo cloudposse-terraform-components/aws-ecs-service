@@ -26,7 +26,7 @@ variable "ssm_key_prefix" {
 locals {
   ssm_enabled = module.this.enabled && var.ssm_enabled
 
-  url_params = { for i, url in local.full_urls : format(var.ssm_key_format, var.ssm_key_prefix, var.name, "url/${i}") => {
+  url_params = { for i, url in local.full_urls : format(var.ssm_key_format, var.ssm_key_prefix, join("-", concat([var.name], var.attributes)), "url/${i}") => {
     description = "ECS Service URL for ${var.name}"
     type        = "String",
     value       = url
