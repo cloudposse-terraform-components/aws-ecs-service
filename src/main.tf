@@ -135,12 +135,12 @@ locals {
     for name, settings in var.containers :
     name => merge(local.container_chamber[name], lookup(local.container_s3, name, {}), settings, )
     if local.enabled
-  } : null
+  } : {}
   containers_priority_s3 = local.enabled ? {
     for name, settings in var.containers :
     name => merge(settings, local.container_chamber[name], lookup(local.container_s3, name, {}))
     if local.enabled
-  } : null
+  } : {}
 }
 
 data "aws_ssm_parameters_by_path" "default" {
@@ -635,13 +635,17 @@ data "aws_ecs_task_definition" "created_task" {
 locals {
   created_task_definition = local.s3_mirroring_enabled ? data.aws_ecs_task_definition.created_task[0] : null
 
-  # Remove the 'image' field from container definitions to prevent drift when CI/CD updates images
-  # CI/CD will provide the image in the complete task definition
+  # Remove the 'image' field only from the service container to prevent drift when CI/CD updates images
+  # CI/CD will provide the image for the service container in the complete task definition
+  # Sidecar containers (datadog, fluent-bit, etc.) retain their images
+  service_container_name = try(local.service_container["name"], null)
   container_definition_without_image = [
-    for container in local.container_definition : {
-      for key, value in container : key => value
-      if key != "image"
-    }
+    for container in local.container_definition : (
+      container.name == local.service_container_name ? {
+        for key, value in container : key => value
+        if key != "image"
+      } : container
+    )
   ]
 
   # Build the task template from the Terraform-created task definition
