@@ -763,7 +763,7 @@ variable "vpc_component_name" {
 
 variable "additional_security_groups" {
   type        = list(string)
-  description = "A list of additionial security group IDs to add to the service"
+  description = "A list of additional security group IDs to add to the service"
   default     = []
 }
 
