@@ -641,19 +641,17 @@ locals {
   service_container_name = try(local.service_container["name"], null)
 
   # Process each container: strip image from service container, keep it for sidecars
-  container_definitions_processed = [
-    for container in local.container_definition : (
-      container.name == local.service_container_name ? {
-        for key, value in container : key => value if key != "image"
-        } : {
-        for key, value in container : key => value
-      }
+  container_definition_without_image = [
+    for container in local.container_definition : merge(
+      container,
+      container.name == local.service_container_name ? { image = null } : {}
     )
   ]
 
+
   # Build the task template from the Terraform-created task definition
   task_template = local.s3_mirroring_enabled ? {
-    containerDefinitions = local.container_definitions_processed
+    containerDefinitions = local.container_definition_without_image
     family               = lookup(local.created_task_definition, "family", null),
     taskRoleArn          = lookup(local.created_task_definition, "task_role_arn", null),
     executionRoleArn     = lookup(local.created_task_definition, "execution_role_arn", null),
