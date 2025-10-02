@@ -296,17 +296,12 @@ components:
                 hostPort: 8443
                 protocol: tcp
 
-        # Register the stunnel container to the same default target group
-        # Omit target_group_arn to use the default ALB/NLB target group
+        # Register the stunnel container to a separate target group
+        # Each additional port MUST specify a unique target_group_arn
         additional_lb_target_groups:
           - container_name: "stunnel"
             container_port: 8443
-
-        # OR specify a custom target group ARN:
-        # additional_lb_target_groups:
-        #   - container_name: "stunnel"
-        #     container_port: 8443
-        #     target_group_arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/stunnel-tg/abc123"
+            target_group_arn: "arn:aws:elasticloadbalancing:us-east-1:123456789012:targetgroup/stunnel-tg/abc123"
 ```
 
 ### Additional Security Groups

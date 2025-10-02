@@ -771,7 +771,7 @@ variable "additional_lb_target_groups" {
   type = list(object({
     container_name   = string
     container_port   = number
-    target_group_arn = optional(string)
+    target_group_arn = string
   }))
   description = <<-EOT
     Additional load balancer target group configurations for registering multiple container ports.
@@ -779,7 +779,15 @@ variable "additional_lb_target_groups" {
     Each entry requires:
     - container_name: Name of the container to register
     - container_port: Port on the container to register
-    - target_group_arn: (Optional) ARN of the target group. If not provided, uses the default ALB/NLB target group
+    - target_group_arn: ARN of the target group. Each additional port must specify a unique target group ARN
   EOT
   default     = []
+
+  validation {
+    condition = alltrue([
+      for config in var.additional_lb_target_groups :
+      can(regex("^arn:aws[a-z-]*:elasticloadbalancing:[a-z0-9-]+:[0-9]{12}:targetgroup/.+$", config.target_group_arn))
+    ])
+    error_message = "Each additional_lb_target_groups entry must specify a valid target_group_arn in the format: arn:aws:elasticloadbalancing:region:account-id:targetgroup/name/id"
+  }
 }

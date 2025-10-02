@@ -3,8 +3,9 @@
 ### Added
 
 - Added `additional_lb_target_groups` variable to support registering multiple container ports to load balancer target groups
-  - Enables sidecar containers (e.g., stunnel, envoy) to be registered to the same or separate target groups
-  - `target_group_arn` is optional - defaults to using the same ALB/NLB target group as the service container
+  - Enables sidecar containers (e.g., stunnel, envoy) to be registered to separate target groups
+  - Each entry requires a unique `target_group_arn` to prevent all additional ports from being wired to the same target group
+  - Includes validation to ensure valid target group ARN format
 - Added `additional_security_groups` variable to attach additional security groups to the ECS service
 - Added `security_group_id` field to `custom_security_group_rules` to allow rules to target different security groups
 

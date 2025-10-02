@@ -330,12 +330,10 @@ module "ecs_alb_service_task" {
     ],
     [
       for lb_config in var.additional_lb_target_groups : {
-        container_name = lb_config.container_name
-        container_port = lb_config.container_port
-        target_group_arn = try(lb_config.target_group_arn, null) != null ? lb_config.target_group_arn : (
-          local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb_compat.default_target_group_arn
-        )
-        elb_name = null
+        container_name   = lb_config.container_name
+        container_port   = lb_config.container_port
+        target_group_arn = lb_config.target_group_arn
+        elb_name         = null
       }
     ]
   ) : []
@@ -644,7 +642,7 @@ locals {
   container_definition_without_image = [
     for container in local.container_definition : merge(
       container,
-      container.name == local.service_container_name ? { image = null } : {}
+      container.name == local.service_container_name ? { image = "" } : {}
     )
   ]
 
