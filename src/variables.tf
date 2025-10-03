@@ -135,6 +135,9 @@ variable "task" {
     circuit_breaker_deployment_enabled = optional(bool, true)
     circuit_breaker_rollback_enabled   = optional(bool, true)
 
+    ignore_changes_task_definition = optional(bool, true)
+    ignore_changes_desired_count   = optional(bool, false)
+
     ecs_service_enabled = optional(bool, true)
     bind_mount_volumes = optional(list(object({
       name      = string
@@ -718,6 +721,7 @@ variable "custom_security_group_rules" {
     description              = optional(string)
     source_security_group_id = optional(string)
     prefix_list_ids          = optional(list(string))
+    security_group_id        = optional(string)
   }))
   description = "The list of custom security group rules to add to the service security group"
   default     = []
@@ -755,4 +759,35 @@ variable "vpc_component_name" {
   type        = string
   description = "The name of a VPC component"
   default     = "vpc"
+}
+
+variable "additional_security_groups" {
+  type        = list(string)
+  description = "A list of additional security group IDs to add to the service"
+  default     = []
+}
+
+variable "additional_lb_target_groups" {
+  type = list(object({
+    container_name   = string
+    container_port   = number
+    target_group_arn = string
+  }))
+  description = <<-EOT
+    Additional load balancer target group configurations for registering multiple container ports.
+    This allows you to register sidecar containers to separate target groups.
+    Each entry requires:
+    - container_name: Name of the container to register
+    - container_port: Port on the container to register
+    - target_group_arn: ARN of the target group. Each additional port must specify a unique target group ARN
+  EOT
+  default     = []
+
+  validation {
+    condition = alltrue([
+      for config in var.additional_lb_target_groups :
+      can(regex("^arn:aws[a-z-]*:elasticloadbalancing:[a-z0-9-]+:[0-9]{12}:targetgroup/.+$", config.target_group_arn))
+    ])
+    error_message = "Each additional_lb_target_groups entry must specify a valid target_group_arn in the format: arn:aws:elasticloadbalancing:region:account-id:targetgroup/name/id"
+  }
 }

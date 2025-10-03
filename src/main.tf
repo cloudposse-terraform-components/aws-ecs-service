@@ -10,9 +10,11 @@ locals {
 
   assign_public_ip = try(local.task["assign_public_ip"], false)
 
-  container_definition = concat([
-    for container in module.container_definition :
-    container.json_map_object
+  container_definition = concat(
+    [
+
+      for container in module.container_definition :
+      container.json_map_object
     ],
     [
       for container in module.datadog_container_definition :
@@ -129,16 +131,16 @@ locals {
     local.container_aliases[item.name] => { container_definition = item }
   }
 
-  containers_priority_terraform = {
+  containers_priority_terraform = local.enabled ? {
     for name, settings in var.containers :
     name => merge(local.container_chamber[name], lookup(local.container_s3, name, {}), settings, )
     if local.enabled
-  }
-  containers_priority_s3 = {
+  } : {}
+  containers_priority_s3 = local.enabled ? {
     for name, settings in var.containers :
     name => merge(settings, local.container_chamber[name], lookup(local.container_s3, name, {}))
     if local.enabled
-  }
+  } : {}
 }
 
 data "aws_ssm_parameters_by_path" "default" {
@@ -302,11 +304,13 @@ module "ecs_alb_service_task" {
 
   container_definition_json = jsonencode(local.container_definition)
 
+  # # When following latest, point service at the latest ACTIVE task definition ARN
+  # task_definition = local.follow_latest_task_definition ? compact([local.latest_task_definition]) : []
   # This is set to true to allow ingress from the ALB sg
   use_alb_security_group = local.use_alb_security_group
   container_port         = local.container_port
   alb_security_group     = local.lb_sg_id
-  security_group_ids     = compact(concat([local.vpc_sg_id, local.rds_sg_id], local.external_security_group))
+  security_group_ids     = compact(concat([local.vpc_sg_id, local.rds_sg_id], local.external_security_group, var.additional_security_groups))
   enable_all_egress_rule = var.enable_all_egress_rule
 
   nlb_cidr_blocks     = local.is_nlb ? [module.vpc.outputs.vpc_cidr] : []
@@ -314,15 +318,25 @@ module "ecs_alb_service_task" {
   use_nlb_cidr_blocks = local.is_nlb
 
   # See https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service#load_balancer
-  ecs_load_balancers = local.use_lb ? [
-    {
-      container_name   = try(local.service_container["name"], null),
-      container_port   = local.container_port,
-      target_group_arn = local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb_compat.default_target_group_arn
-      # not required since elb is unused but must be set to null
-      elb_name = null
-    },
-  ] : []
+  ecs_load_balancers = local.use_lb ? concat(
+    [
+      {
+        container_name   = try(local.service_container["name"], null),
+        container_port   = local.container_port,
+        target_group_arn = local.is_alb ? module.alb_ingress[0].target_group_arn : local.nlb_compat.default_target_group_arn
+        # not required since elb is unused but must be set to null
+        elb_name = null
+      },
+    ],
+    [
+      for lb_config in var.additional_lb_target_groups : {
+        container_name   = lb_config.container_name
+        container_port   = lb_config.container_port
+        target_group_arn = lb_config.target_group_arn
+        elb_name         = null
+      }
+    ]
+  ) : []
 
   assign_public_ip                   = local.assign_public_ip
   ignore_changes_task_definition     = try(local.task["ignore_changes_task_definition"], false)
@@ -380,7 +394,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
   cidr_blocks              = try(each.value.cidr_blocks, null)
   source_security_group_id = try(each.value.source_security_group_id, null)
   prefix_list_ids          = try(each.value.prefix_list_ids, null)
-  security_group_id        = one(module.ecs_alb_service_task[*].service_security_group_id)
+  security_group_id        = try(each.value.security_group_id, null) != null ? each.value.security_group_id : one(module.ecs_alb_service_task[*].service_security_group_id)
 }
 
 module "alb_ingress" {
@@ -618,8 +632,24 @@ data "aws_ecs_task_definition" "created_task" {
 
 locals {
   created_task_definition = local.s3_mirroring_enabled ? data.aws_ecs_task_definition.created_task[0] : null
+
+  # Remove the 'image' field only from the service container to prevent drift when CI/CD updates images
+  # CI/CD will provide the image for the service container in the complete task definition
+  # Sidecar containers (datadog, fluent-bit, etc.) retain their images
+  service_container_name = try(local.service_container["name"], null)
+
+  # Process each container: strip image from service container, keep it for sidecars
+  container_definition_without_image = [
+    for container in local.container_definition : merge(
+      container,
+      container.name == local.service_container_name ? { image = "" } : {}
+    )
+  ]
+
+
+  # Build the task template from the Terraform-created task definition
   task_template = local.s3_mirroring_enabled ? {
-    containerDefinitions = local.container_definition
+    containerDefinitions = local.container_definition_without_image
     family               = lookup(local.created_task_definition, "family", null),
     taskRoleArn          = lookup(local.created_task_definition, "task_role_arn", null),
     executionRoleArn     = lookup(local.created_task_definition, "execution_role_arn", null),
@@ -628,11 +658,11 @@ locals {
     requiresCompatibilities = [lookup(local.task, "launch_type", "FARGATE")]
     cpu                     = tostring(lookup(local.task, "task_cpu", null))
     memory                  = tostring(lookup(local.task, "task_memory", null))
-
   } : null
+
 }
 
-resource "aws_s3_bucket_object" "task_definition_template" {
+resource "aws_s3_object" "task_definition_template" {
   count                  = local.s3_mirroring_enabled ? 1 : 0
   bucket                 = lookup(module.s3[0].outputs, "bucket_id", null)
   key                    = format("%s/%s/task-template.json", module.ecs_cluster.outputs.cluster_name, module.this.id)
