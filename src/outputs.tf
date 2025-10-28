@@ -77,3 +77,8 @@ output "service_arn" {
   value       = one(module.ecs_alb_service_task[*].service_arn)
   description = "The ECS service ARN"
 }
+
+output "service_sg_id" {
+  value       = one(module.ecs_alb_service_task[*].service_security_group_id)
+  description = "The ECS service security group ID"
+}
