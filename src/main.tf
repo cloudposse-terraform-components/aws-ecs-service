@@ -399,7 +399,7 @@ resource "aws_security_group_rule" "custom_sg_rules" {
 
 module "alb_ingress" {
   source  = "cloudposse/alb-ingress/aws"
-  version = "0.30.0"
+  version = "0.31.0"
 
   count = local.is_alb ? 1 : 0
 
