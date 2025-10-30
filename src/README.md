@@ -293,7 +293,7 @@ components:
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
-| <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.30.0 |
+| <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.31.0 |
 | <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 1.8.0 |
 | <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
