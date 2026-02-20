@@ -68,7 +68,7 @@ locals {
 
 module "vpc" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component = var.vpc_component_name
 
@@ -78,7 +78,7 @@ module "vpc" {
 module "security_group" {
   count   = local.enabled && var.task_security_group_component != null ? 1 : 0
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component = var.task_security_group_component
 
@@ -88,7 +88,7 @@ module "security_group" {
 module "rds" {
   count   = local.enabled && var.use_rds_client_sg && try(length(var.rds_name), 0) > 0 ? 1 : 0
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component = var.rds_name
 
@@ -97,7 +97,7 @@ module "rds" {
 
 module "ecs_cluster" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component = coalesce(var.ecs_cluster_name, "ecs-cluster")
 
@@ -106,7 +106,7 @@ module "ecs_cluster" {
 
 module "alb" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   count = local.is_alb && local.use_external_lb ? 1 : 0
 
@@ -117,7 +117,7 @@ module "alb" {
 
 module "nlb" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   count = local.is_nlb ? 1 : 0
 
@@ -128,7 +128,7 @@ module "nlb" {
 
 module "s3" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   count = local.s3_mirroring_enabled ? 1 : 0
 
@@ -140,7 +140,7 @@ module "s3" {
 
 module "service_domain" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   component = var.zone_component
 
@@ -176,7 +176,7 @@ data "aws_kms_alias" "selected" {
 
 module "iam_role" {
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
   count   = local.enabled && var.task_iam_role_component != null ? 1 : 0
 
   component = var.task_iam_role_component
@@ -188,7 +188,7 @@ module "efs" {
   for_each = local.efs_component_map
 
   source  = "cloudposse/stack-config/yaml//modules/remote-state"
-  version = "1.8.0"
+  version = "2.0.0"
 
   # Here we can use [0] because aws only allows one efs volume configuration per volume
   component = each.value.efs_volume_configuration[0].component
