@@ -275,10 +275,9 @@ components:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="requirement_jq"></a> [jq](#requirement\_jq) | >=0.2.0 |
-| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.2 |
 
 ## Providers
 
@@ -286,7 +285,6 @@ components:
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="provider_jq"></a> [jq](#provider\_jq) | >=0.2.0 |
-| <a name="provider_template"></a> [template](#provider\_template) | >= 2.2 |
 
 ## Modules
 
@@ -349,7 +347,6 @@ components:
 | [aws_ssm_parameter.datadog_api_key](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter) | data source |
 | [aws_ssm_parameters_by_path.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameters_by_path) | data source |
 | [jq_query.service_domain_query](https://registry.terraform.io/providers/massdriver-cloud/jq/latest/docs/data-sources/query) | data source |
-| [template_file.envs](https://registry.terraform.io/providers/cloudposse/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 

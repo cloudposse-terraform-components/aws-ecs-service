@@ -18,6 +18,12 @@ components:
               - containerPort: 80
                 hostPort: 80
                 protocol: tcp
+            # Exercises the `templatestring()` substitution in `local.env_map_subst`.
+            # `${stage}`, `${namespace}` must resolve to values from `module.this`.
+            map_environment:
+              STAGE_NAME: "${stage}"
+              NAMESPACE_NAME: "${namespace}"
+              SERVICE_NAME: "${name}"
         task:
           # this places the task in the public subnet
           assign_public_ip: true # required for pulling public image since this is fargate

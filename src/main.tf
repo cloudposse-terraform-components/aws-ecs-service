@@ -156,28 +156,21 @@ locals {
 }
 
 
-data "template_file" "envs" {
-  for_each = { for k, v in local.containers_envs : k => v if local.enabled }
-
-  template = replace(each.value, "$$", "$")
-
-  vars = {
-    stage         = module.this.stage
-    namespace     = module.this.namespace
-    name          = module.this.name
-    full_domain   = local.full_domain
-    vanity_domain = var.vanity_domain
-    # `service_domain` uses whatever the current service is (public/private)
-    service_domain         = local.domain_no_service_name
-    service_domain_public  = local.public_domain_no_service_name
-    service_domain_private = local.private_domain_no_service_name
-  }
-}
-
 locals {
   env_map_subst = {
-    for k, v in data.template_file.envs :
-    k => v.rendered
+    for k, v in local.containers_envs :
+    k => templatestring(replace(v, "$$", "$"), {
+      stage         = module.this.stage
+      namespace     = module.this.namespace
+      name          = module.this.name
+      full_domain   = local.full_domain
+      vanity_domain = var.vanity_domain
+      # `service_domain` uses whatever the current service is (public/private)
+      service_domain         = local.domain_no_service_name
+      service_domain_public  = local.public_domain_no_service_name
+      service_domain_private = local.private_domain_no_service_name
+    })
+    if local.enabled
   }
   map_secrets = { for k, v in local.containers_priority_terraform : k => lookup(v, "map_secrets", null) != null ? zipmap(
     keys(lookup(v, "map_secrets", null)),

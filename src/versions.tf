@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.8.0"
 
   required_providers {
     aws = {
@@ -13,10 +13,6 @@ terraform {
       ## │   on .terraform/modules/ecs_cloudwatch_autoscaling/main.tf line 15, in resource "aws_appautoscaling_target" "default":
       ## │   15: resource "aws_appautoscaling_target" "default" {
       version = ">= 4.66.1, < 6.0.0"
-    }
-    template = {
-      source  = "cloudposse/template"
-      version = ">= 2.2"
     }
     jq = {
       source  = "massdriver-cloud/jq"
