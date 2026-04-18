@@ -157,9 +157,17 @@ locals {
 
 
 locals {
+  # Pre-compute the `$$` → `$` escape. HashiCorp Terraform requires the first
+  # argument of `templatestring()` to be a direct reference to a named value,
+  # not a function-call expression — so the `replace()` must happen here, not
+  # inline inside the `templatestring()` call below.
+  containers_envs_escaped = {
+    for k, v in local.containers_envs : k => replace(v, "$$", "$")
+  }
+
   env_map_subst = {
-    for k, v in local.containers_envs :
-    k => templatestring(replace(v, "$$", "$"), {
+    for k, v in local.containers_envs_escaped :
+    k => templatestring(v, {
       stage         = module.this.stage
       namespace     = module.this.namespace
       name          = module.this.name
