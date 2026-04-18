@@ -55,7 +55,7 @@ spec:
 
     - component: "ecs-cluster"
       source: github.com/cloudposse-terraform-components/aws-ecs.git//src?ref={{.Version}}
-      version: v2.1.1
+      version: v2.1.2
       targets:
         - "components/terraform/ecs-cluster"
       included_paths:
