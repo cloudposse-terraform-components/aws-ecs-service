@@ -156,28 +156,29 @@ locals {
 }
 
 
-data "template_file" "envs" {
-  for_each = { for k, v in local.containers_envs : k => v if local.enabled }
-
-  template = replace(each.value, "$$", "$")
-
-  vars = {
-    stage         = module.this.stage
-    namespace     = module.this.namespace
-    name          = module.this.name
-    full_domain   = local.full_domain
-    vanity_domain = var.vanity_domain
-    # `service_domain` uses whatever the current service is (public/private)
-    service_domain         = local.domain_no_service_name
-    service_domain_public  = local.public_domain_no_service_name
-    service_domain_private = local.private_domain_no_service_name
-  }
-}
-
 locals {
+  # Pre-compute the `$$` → `$` escape. HashiCorp Terraform requires the first
+  # argument of `templatestring()` to be a direct reference to a named value,
+  # not a function-call expression — so the `replace()` must happen here, not
+  # inline inside the `templatestring()` call below.
+  containers_envs_escaped = {
+    for k, v in local.containers_envs : k => replace(v, "$$", "$")
+  }
+
   env_map_subst = {
-    for k, v in data.template_file.envs :
-    k => v.rendered
+    for k, v in local.containers_envs_escaped :
+    k => templatestring(v, {
+      stage         = module.this.stage
+      namespace     = module.this.namespace
+      name          = module.this.name
+      full_domain   = local.full_domain
+      vanity_domain = var.vanity_domain
+      # `service_domain` uses whatever the current service is (public/private)
+      service_domain         = local.domain_no_service_name
+      service_domain_public  = local.public_domain_no_service_name
+      service_domain_private = local.private_domain_no_service_name
+    })
+    if local.enabled
   }
   map_secrets = { for k, v in local.containers_priority_terraform : k => lookup(v, "map_secrets", null) != null ? zipmap(
     keys(lookup(v, "map_secrets", null)),

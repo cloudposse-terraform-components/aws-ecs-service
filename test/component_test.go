@@ -39,6 +39,14 @@ func (s *ComponentSuite) TestBasic() {
 	serviceNameOut := atmos.Output(s.T(), componentInstance, "service_name")
 	assert.Contains(s.T(), serviceNameOut, expectedServiceName)
 
+	// Verify that `templatestring()` substitutions in container `map_environment`
+	// were rendered. `environment_map` exposes `local.env_map_subst` keyed by
+	// "<containerKey>,<envVarName>".
+	envMap := atmos.OutputMap(s.T(), componentInstance, "environment_map")
+	assert.Equal(s.T(), "test", envMap["service,STAGE_NAME"])
+	assert.Equal(s.T(), "eg", envMap["service,NAMESPACE_NAME"])
+	assert.Equal(s.T(), inputs["name"], envMap["service,SERVICE_NAME"])
+
 	// Drift test ensures idempotency
 	s.DriftTest(component, stack, &inputs)
 }
