@@ -295,7 +295,7 @@ resource "aws_iam_role_policy_attachment" "additional_exec" {
 
 module "ecs_alb_service_task" {
   source  = "cloudposse/ecs-alb-service-task/aws"
-  version = "0.78.0"
+  version = "1.0.0"
 
   count = local.enabled ? 1 : 0
 
