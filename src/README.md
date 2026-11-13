@@ -274,26 +274,19 @@ components:
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.66.1, < 6.0.0 |
 | <a name="requirement_jq"></a> [jq](#requirement\_jq) | >=0.2.0 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.66.1, < 6.0.0 |
-| <a name="provider_jq"></a> [jq](#provider\_jq) | >=0.2.0 |
-
 ## Modules
 
 | Name | Source | Version |
-|------|--------|---------|
-| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| ---- | ------ | ------- |
+| <a name="module_alb"></a> [alb](#module\_alb) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_alb_ingress"></a> [alb\_ingress](#module\_alb\_ingress) | cloudposse/alb-ingress/aws | 0.31.0 |
-| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
-| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_cloudmap_namespace"></a> [cloudmap\_namespace](#module\_cloudmap\_namespace) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
+| <a name="module_cloudmap_namespace_service_discovery"></a> [cloudmap\_namespace\_service\_discovery](#module\_cloudmap\_namespace\_service\_discovery) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_container_definition"></a> [container\_definition](#module\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_container_definition"></a> [datadog\_container\_definition](#module\_datadog\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
 | <a name="module_datadog_fluent_bit_container_definition"></a> [datadog\_fluent\_bit\_container\_definition](#module\_datadog\_fluent\_bit\_container\_definition) | cloudposse/ecs-container-definition/aws | 0.61.2 |
@@ -301,28 +294,28 @@ components:
 | <a name="module_ecs_alb_service_task"></a> [ecs\_alb\_service\_task](#module\_ecs\_alb\_service\_task) | cloudposse/ecs-alb-service-task/aws | 0.78.0 |
 | <a name="module_ecs_cloudwatch_autoscaling"></a> [ecs\_cloudwatch\_autoscaling](#module\_ecs\_cloudwatch\_autoscaling) | cloudposse/ecs-cloudwatch-autoscaling/aws | 1.0.0 |
 | <a name="module_ecs_cloudwatch_sns_alarms"></a> [ecs\_cloudwatch\_sns\_alarms](#module\_ecs\_cloudwatch\_sns\_alarms) | cloudposse/ecs-cloudwatch-sns-alarms/aws | 0.13.2 |
-| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
-| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_ecs_cluster"></a> [ecs\_cluster](#module\_ecs\_cluster) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
+| <a name="module_efs"></a> [efs](#module\_efs) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_gha_assume_role"></a> [gha\_assume\_role](#module\_gha\_assume\_role) | ../account-map/modules/team-assume-role-policy | n/a |
 | <a name="module_gha_role_name"></a> [gha\_role\_name](#module\_gha\_role\_name) | cloudposse/label/null | 0.25.0 |
-| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_iam_role"></a> [iam\_role](#module\_iam\_role) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_iam_roles"></a> [iam\_roles](#module\_iam\_roles) | ../account-map/modules/iam-roles | n/a |
 | <a name="module_logs"></a> [logs](#module\_logs) | cloudposse/cloudwatch-logs/aws | 0.6.9 |
-| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
-| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_nlb"></a> [nlb](#module\_nlb) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
+| <a name="module_rds"></a> [rds](#module\_rds) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_roles_to_principals"></a> [roles\_to\_principals](#module\_roles\_to\_principals) | ../account-map/modules/roles-to-principals | n/a |
-| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
-| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
-| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_s3"></a> [s3](#module\_s3) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
+| <a name="module_service_domain"></a> [service\_domain](#module\_service\_domain) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 | <a name="module_task_exec_iam_policy"></a> [task\_exec\_iam\_policy](#module\_task\_exec\_iam\_policy) | cloudposse/iam-policy/aws | 2.0.2 |
 | <a name="module_this"></a> [this](#module\_this) | cloudposse/label/null | 0.25.0 |
 | <a name="module_vanity_alias"></a> [vanity\_alias](#module\_vanity\_alias) | cloudposse/route53-alias/aws | 0.13.0 |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | cloudposse/stack-config/yaml//modules/remote-state | 2.0.1 |
 
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_iam_policy.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
 | [aws_iam_role.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
 | [aws_iam_role_policy.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
@@ -351,7 +344,7 @@ components:
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_additional_lb_target_groups"></a> [additional\_lb\_target\_groups](#input\_additional\_lb\_target\_groups) | Additional load balancer target group configurations for registering multiple container ports.<br/>This allows you to register sidecar containers to separate target groups.<br/>Each entry requires:<br/>- container\_name: Name of the container to register<br/>- container\_port: Port on the container to register<br/>- target\_group\_arn: ARN of the target group. Each additional port must specify a unique target group ARN | <pre>list(object({<br/>    container_name   = string<br/>    container_port   = number<br/>    target_group_arn = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_additional_security_groups"></a> [additional\_security\_groups](#input\_additional\_security\_groups) | A list of additional security group IDs to add to the service | `list(string)` | `[]` | no |
 | <a name="input_additional_tag_map"></a> [additional\_tag\_map](#input\_additional\_tag\_map) | Additional key-value pairs to add to each map in `tags_as_list_of_maps`. Not added to `tags` or `id`.<br/>This is for some rare cases where resources want additional configuration of tags<br/>and therefore take a list of maps with tag key, value, and additional configuration. | `map(string)` | `{}` | no |
@@ -474,7 +467,7 @@ components:
 ## Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_ecs_cluster_arn"></a> [ecs\_cluster\_arn](#output\_ecs\_cluster\_arn) | Selected ECS cluster ARN |
 | <a name="output_environment_map"></a> [environment\_map](#output\_environment\_map) | Environment variables to pass to the container, this is a map of key/value pairs, where the key is `containerName,variableName` |
 | <a name="output_full_domain"></a> [full\_domain](#output\_full\_domain) | Domain to respond to GET requests |
